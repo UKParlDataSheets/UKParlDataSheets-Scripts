@@ -3,9 +3,9 @@
 require_once 'funcs.php';
 
 $dom = new DOMDocument();
-$dom->loadXML(file_get_contents('Addresses.xml'));
+$dom->loadXML(file_get_contents('Commons.xml'));
 
-$outFile = fopen('lordsV1.csv', 'w');
+$outFile = fopen('commonsV1.csv', 'w');
 
 $headings = array(
     'Member_Id',
