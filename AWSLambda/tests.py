@@ -60,6 +60,20 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getTwitter(), 'lordphilofbrum')
 
+    def test_4(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.address1 = 'https://twitter.com/LordRoyKennedy?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getTwitter(), 'LordRoyKennedy')
+
 
 if __name__ == '__main__':
     unittest.main()
