@@ -139,5 +139,21 @@ class TestTwitter(unittest.TestCase):
 
 
 
+    def test_both1(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.note = 'Twitter: @chiefrabbi, Facebook: www.facebook.com/lordsacks'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getTwitter(), 'chiefrabbi')
+        self.assertEqual(person.getFacebook(), 'https://www.facebook.com/lordsacks')
+
+
 if __name__ == '__main__':
     unittest.main()

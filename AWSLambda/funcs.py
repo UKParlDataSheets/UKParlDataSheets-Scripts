@@ -58,7 +58,7 @@ class ModelAddressBase:
 		if self.address1 is not None and self.address1.startswith('https://twitter.com/'):
 			return self.address1[20:].split('?').pop(0)
 		if self.note is not None and self.note.startswith('Twitter: @'):
-			return self.note[10:]
+			return self.note[10:].split(',').pop(0)
 		if self.note is not None and self.note.startswith('Twitter: '):
 			return self.note[9:]
 		if self.note is not None and self.note.startswith('Twitter - @'):
@@ -70,6 +70,12 @@ class ModelAddressBase:
 			return self.address1
 		if self.address1 is not None and self.address1.startswith('https://en-gb.facebook.com/'):
 			return self.address1
+		if self.note is not None and self.note.find('Facebook: ') != -1:
+			url = self.note.split(', Facebook: ').pop(1)
+			if not url.startswith('http'):
+				url = 'https://' + url
+			return url 
+
 		
 
 class ModelPeer(ModelBase):
