@@ -123,6 +123,21 @@ class TestTwitter(unittest.TestCase):
         self.assertEqual(person.getFacebook(), 'http://www.facebook.com/JeremyCorbynMP/')
 
 
+    def test_facebook3(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.address1 = 'https://en-gb.facebook.com/LordAltonofLiverpool/'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getFacebook(), 'https://en-gb.facebook.com/LordAltonofLiverpool/')
+
+
 
 if __name__ == '__main__':
     unittest.main()

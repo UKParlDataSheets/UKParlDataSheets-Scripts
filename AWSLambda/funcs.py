@@ -68,6 +68,8 @@ class ModelAddressBase:
 			return self.address1
 		if self.address1 is not None and self.address1.startswith('http://www.facebook.com/'):
 			return self.address1
+		if self.address1 is not None and self.address1.startswith('https://en-gb.facebook.com/'):
+			return self.address1
 		
 
 class ModelPeer(ModelBase):
