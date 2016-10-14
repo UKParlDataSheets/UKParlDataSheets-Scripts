@@ -12,10 +12,11 @@ class TestTwitter(unittest.TestCase):
         person.addresses.append(address1)
 
         self.assertEqual(person.getTwitter(), None)
+        self.assertEqual(person.getFacebook(), None)
 
 
 
-    def test_1(self):
+    def test_twitter1(self):
         person = ModelBase()
 
         address1 = ModelAddressBase()
@@ -30,7 +31,7 @@ class TestTwitter(unittest.TestCase):
         self.assertEqual(person.getTwitter(), 'LizBarkerLords')
 
 
-    def test_2(self):
+    def test_twitter2(self):
         person = ModelBase()
 
         address1 = ModelAddressBase()
@@ -46,7 +47,7 @@ class TestTwitter(unittest.TestCase):
 
 
 
-    def test_3(self):
+    def test_twitter3(self):
         person = ModelBase()
 
         address1 = ModelAddressBase()
@@ -60,7 +61,7 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getTwitter(), 'lordphilofbrum')
 
-    def test_4(self):
+    def test_twitter4(self):
         person = ModelBase()
 
         address1 = ModelAddressBase()
@@ -76,7 +77,7 @@ class TestTwitter(unittest.TestCase):
 
 
 
-    def test_5(self):
+    def test_twitter5(self):
         person = ModelBase()
 
         address1 = ModelAddressBase()
@@ -89,6 +90,22 @@ class TestTwitter(unittest.TestCase):
         person.addresses.append(address2)
 
         self.assertEqual(person.getTwitter(), 'delythjmorgan')
+
+
+    def test_facebook1(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.address1 = 'https://www.facebook.com/marycreaghwakefield'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getFacebook(), 'https://www.facebook.com/marycreaghwakefield')
+
 
 if __name__ == '__main__':
     unittest.main()

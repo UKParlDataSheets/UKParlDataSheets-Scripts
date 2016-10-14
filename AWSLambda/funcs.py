@@ -32,6 +32,11 @@ class ModelBase:
 			twitter = address.getTwitter()
 			if (twitter is not None):
 				return twitter
+	def getFacebook(self):
+		for address in self.addresses:
+			fb = address.getFacebook()
+			if (fb is not None):
+				return fb
 
 class ModelAddressBase:
 	def __init__(self):
@@ -58,6 +63,9 @@ class ModelAddressBase:
 			return self.note[9:]
 		if self.note is not None and self.note.startswith('Twitter - @'):
 			return self.note[11:]
+	def getFacebook(self):
+		if self.address1 is not None and self.address1.startswith('https://www.facebook.com/'):
+			return self.address1
 		
 
 class ModelPeer(ModelBase):
