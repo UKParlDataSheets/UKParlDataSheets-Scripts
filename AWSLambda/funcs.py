@@ -52,6 +52,8 @@ class ModelAddressBase:
 	def getTwitter(self):
 		if self.address1 is not None and self.address1.startswith('https://twitter.com/'):
 			return self.address1[20:]
+		if self.note is not None and self.note.startswith('Twitter: @'):
+			return self.note[10:]
 		if self.note is not None and self.note.startswith('Twitter: '):
 			return self.note[9:]
 		
