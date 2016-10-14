@@ -27,6 +27,11 @@ class ModelBase:
 		self.currentStatusReason = None
 		self.currentStatusStartDate = None
 		self.addresses = []
+	def getTwitter(self):
+		for address in self.addresses:
+			twitter = address.getTwitter()
+			if (twitter is not None):
+				return twitter
 
 class ModelAddressBase:
 	def __init__(self):
@@ -44,7 +49,10 @@ class ModelAddressBase:
 		self.phone = None
 		self.fax = None
 		self.email = None
-	
+	def getTwitter(self):
+		if self.address1 is not None and self.address1.startswith('https://twitter.com/'):
+			return self.address1[20:]
+		
 
 class ModelPeer(ModelBase):
 	def __init__(self):
@@ -73,17 +81,17 @@ def go(config):
 	peersCSVV1FileName =  config['DIRECTORY'] + '/peers-v1.csv'
 	writePeersV1(peers, peersCSVV1FileName)
 	uploadToS3(config, peersCSVV1FileName, 'lordsV1.csv')
-	
-	
+
+
 	mpsXMLFileName = config['DIRECTORY'] + '/mps.xml'
 	downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',mpsXMLFileName)
 	mps = processMPs(mpsXMLFileName)
 	mpsCSVV1FileName =  config['DIRECTORY'] + '/mps-v1.csv'
 	writeMPsV1(mps, mpsCSVV1FileName)
 	uploadToS3(config, mpsCSVV1FileName, 'commonsV1.csv')
-	
-	
-	
+
+
+
 def downloadData(url, filename):
 	response = urllib2.urlopen(url)
 	if (response.info().gettype() != 'application/xml'):
@@ -92,7 +100,7 @@ def downloadData(url, filename):
 	target = open(filename, 'w')
 	target.write(data)
 	target.close()
-	
+
 def processPeers(peersXMLFileName):
 	tree = ET.parse(peersXMLFileName)
 	root = tree.getroot()
@@ -141,7 +149,7 @@ def processPeers(peersXMLFileName):
 		peers.append(person)
 	return peers
 
-		
+
 def writePeersV1(peers, filename):
 	csvfile = open(filename, 'wb')
 	writer = csv.writer(csvfile)
@@ -216,14 +224,14 @@ def writePeersV1(peers, filename):
 					row.append(None)
 		writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
 	csvfile.close()
-	
-	
+
+
 def processMPs(filename):
 	tree = ET.parse(filename)
 	root = tree.getroot()
 	mps = []
 	for child in root:
-		person = ModelMP()		
+		person = ModelMP()
 		person.memberId = child.attrib['Member_Id']
 		person.dobsId = child.attrib['Dods_Id']
 		person.pimsId = child.attrib['Pims_Id']
@@ -266,7 +274,7 @@ def processMPs(filename):
 		mps.append(person)
 	return mps
 
-		
+
 def writeMPsV1(mps, filename):
 	csvfile = open(filename, 'wb')
 	writer = csv.writer(csvfile)
