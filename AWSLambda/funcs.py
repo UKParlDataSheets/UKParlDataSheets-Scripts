@@ -58,7 +58,7 @@ class ModelAddressBase:
 		if self.address1 is not None and self.address1.startswith('https://twitter.com/'):
 			return self.address1[20:].split('?').pop(0)
 		if self.note is not None and self.note.startswith('Twitter: @'):
-			return self.note[10:].split(',').pop(0)
+			return self.note[10:].split(',').pop(0).split(';').pop(0).strip()
 		if self.note is not None and self.note.startswith('Twitter: '):
 			return self.note[9:]
 		if self.note is not None and self.note.startswith('Twitter - @'):
@@ -75,6 +75,9 @@ class ModelAddressBase:
 			if not url.startswith('http'):
 				url = 'https://' + url
 			return url 
+		if self.note is not None and self.note.find('www.facebook.com') != -1:
+			url = self.note.split('www.facebook.com').pop(1)
+			return 'https://www.facebook.com' + url
 
 		
 
