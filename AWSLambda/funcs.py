@@ -56,6 +56,8 @@ class ModelAddressBase:
 			return self.note[10:]
 		if self.note is not None and self.note.startswith('Twitter: '):
 			return self.note[9:]
+		if self.note is not None and self.note.startswith('Twitter - @'):
+			return self.note[11:]
 		
 
 class ModelPeer(ModelBase):
