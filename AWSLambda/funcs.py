@@ -105,17 +105,28 @@ def go(config):
 	peersXMLFileName = config['DIRECTORY'] + '/peers.xml'
 	downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Lords/Addresses/',peersXMLFileName)
 	peers = processPeers(peersXMLFileName)
+	
 	peersCSVV1FileName =  config['DIRECTORY'] + '/peers-v1.csv'
 	writePeersV1(peers, peersCSVV1FileName)
 	uploadToS3(config, peersCSVV1FileName, 'lordsV1.csv')
+	
+	peersSimpleCSVV1FileName =  config['DIRECTORY'] + '/peers-simple-v1.csv'
+	writePeersSimpleV1(peers, peersSimpleCSVV1FileName)
+	uploadToS3(config, peersSimpleCSVV1FileName, 'lordsSimpleV1.csv')
+
 
 
 	mpsXMLFileName = config['DIRECTORY'] + '/mps.xml'
 	downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',mpsXMLFileName)
 	mps = processMPs(mpsXMLFileName)
+	
 	mpsCSVV1FileName =  config['DIRECTORY'] + '/mps-v1.csv'
 	writeMPsV1(mps, mpsCSVV1FileName)
 	uploadToS3(config, mpsCSVV1FileName, 'commonsV1.csv')
+	
+	mpsSimpleCSVV1FileName =  config['DIRECTORY'] + '/mps-simple-v1.csv'
+	writeMPsSimpleV1(mps, mpsSimpleCSVV1FileName)
+	uploadToS3(config, mpsSimpleCSVV1FileName, 'commonsSimpleV1.csv')
 
 
 
@@ -252,6 +263,27 @@ def writePeersV1(peers, filename):
 		writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
 	csvfile.close()
 
+def writePeersSimpleV1(peers, filename):
+	csvfile = open(filename, 'wb')
+	writer = csv.writer(csvfile)
+	headings = ['Member_Id','Dods_Id','Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName','Party','Twitter','FaceBook']
+	writer.writerow(headings)
+	for person in peers:
+		row = [
+			person.memberId,
+			person.dobsId,
+			person.pimsId,
+			person.displayAs,
+			person.listAs,
+			person.fullTitle,
+			person.layingMinisterName,
+			person.party,
+			person.getTwitter(),
+			person.getFacebook(),
+		]
+		writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
+	csvfile.close()
+
 
 def processMPs(filename):
 	tree = ET.parse(filename)
@@ -374,6 +406,27 @@ def writeMPsV1(mps, filename):
 		else:
 			for x in range(1, 14):
 				row.append(None)
+		writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
+	csvfile.close()
+
+def writeMPsSimpleV1(mps, filename):
+	csvfile = open(filename, 'wb')
+	writer = csv.writer(csvfile)
+	headings = ['Member_Id','Dods_Id','Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName','Party','Twitter','FaceBook']
+	writer.writerow(headings)
+	for person in mps:
+		row = [
+			person.memberId,
+			person.dobsId,
+			person.pimsId,
+			person.displayAs,
+			person.listAs,
+			person.fullTitle,
+			person.layingMinisterName,
+			person.party,
+			person.getTwitter(),
+			person.getFacebook(),
+		]
 		writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
 	csvfile.close()
 
