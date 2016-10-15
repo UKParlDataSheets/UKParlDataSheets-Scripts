@@ -6,6 +6,6 @@ python:
 install:
   - pip install boto3
 
-script: python AWSLambda/tests.py
+script: python tests.py
 
 

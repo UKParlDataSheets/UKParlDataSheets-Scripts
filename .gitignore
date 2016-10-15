@@ -1,3 +1,3 @@
 *.pyc
-/AWSLambda/config.py
+/config.py
 
