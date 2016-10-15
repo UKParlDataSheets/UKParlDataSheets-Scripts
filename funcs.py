@@ -120,7 +120,7 @@ class ModelMPAddress(ModelAddressBase):
         ModelAddressBase.__init__(self)
 
 
-def go(config):
+def go(config, upload=False):
     peersXMLFileName = config['DIRECTORY'] + '/peers.xml'
     downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Lords/Addresses/',
                  peersXMLFileName)
@@ -128,11 +128,13 @@ def go(config):
 
     peersCSVV1FileName = config['DIRECTORY'] + '/peers-v1.csv'
     writePeersV1(peers, peersCSVV1FileName)
-    uploadToS3(config, peersCSVV1FileName, 'lordsV1.csv')
+    if upload:
+        uploadToS3(config, peersCSVV1FileName, 'lordsV1.csv')
 
     peersSimpleCSVV1FileName = config['DIRECTORY'] + '/peers-simple-v1.csv'
     writePeersSimpleV1(peers, peersSimpleCSVV1FileName)
-    uploadToS3(config, peersSimpleCSVV1FileName, 'lordsSimpleV1.csv')
+    if upload:
+        uploadToS3(config, peersSimpleCSVV1FileName, 'lordsSimpleV1.csv')
 
     mpsXMLFileName = config['DIRECTORY'] + '/mps.xml'
     downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',
@@ -141,11 +143,13 @@ def go(config):
 
     mpsCSVV1FileName = config['DIRECTORY'] + '/mps-v1.csv'
     writeMPsV1(mps, mpsCSVV1FileName)
-    uploadToS3(config, mpsCSVV1FileName, 'commonsV1.csv')
+    if upload:
+        uploadToS3(config, mpsCSVV1FileName, 'commonsV1.csv')
 
     mpsSimpleCSVV1FileName = config['DIRECTORY'] + '/mps-simple-v1.csv'
     writeMPsSimpleV1(mps, mpsSimpleCSVV1FileName)
-    uploadToS3(config, mpsSimpleCSVV1FileName, 'commonsSimpleV1.csv')
+    if upload:
+        uploadToS3(config, mpsSimpleCSVV1FileName, 'commonsSimpleV1.csv')
 
 
 def downloadData(url, filename):
