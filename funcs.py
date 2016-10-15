@@ -136,6 +136,9 @@ def go(config, upload=False):
     if upload:
         uploadToS3(config, peersSimpleCSVV1FileName, 'lordsSimpleV1.csv')
 
+    # we don't needs this again, so clear it to save some memory.
+    peers = None
+
     mpsXMLFileName = config['DIRECTORY'] + '/mps.xml'
     downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',
                  mpsXMLFileName)
