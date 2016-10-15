@@ -13,6 +13,7 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getTwitter(), None)
         self.assertEqual(person.getFacebook(), None)
+        self.assertEqual(person.getEmail(), None)
 
 
 
@@ -139,7 +140,7 @@ class TestTwitter(unittest.TestCase):
 
 
 
-    def test_both1(self):
+    def test_twitterAndFacebook1(self):
         person = ModelBase()
 
         address1 = ModelAddressBase()
@@ -155,7 +156,7 @@ class TestTwitter(unittest.TestCase):
         self.assertEqual(person.getFacebook(), 'https://www.facebook.com/lordsacks')
 
 
-    def test_both2(self):
+    def test_twitterAndFacebook2(self):
         person = ModelBase()
 
         address1 = ModelAddressBase()
@@ -169,6 +170,108 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getTwitter(), 'johnsentamu')
         self.assertEqual(person.getFacebook(), 'https://www.facebook.com/pages/John-Sentamu/25396296321')
+
+    def test_email1(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        # this is some real data :-(
+        address2.email = 'FK10 3SA'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getEmail(), None)
+
+
+    def test_email2(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.email = 'tas.mp@parliament.uk'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getEmail(), 'tas.mp@parliament.uk')
+
+    def test_email3(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.email = 'raj@loomba.com / pritti@theloombafoundation.org'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getEmail(), 'raj@loomba.com')
+
+    def test_email4(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.email = 'charles.allen@parliament.uk PA: gill.sharp@thisisglobal.com'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getEmail(), 'charles.allen@parliament.uk')
+
+    def test_email5(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.email = 'damian.gannon@parliament.uk carole.wise@parliament.uk'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getEmail(), 'damian.gannon@parliament.uk')
+
+
+    def test_emailPeer1(self):
+        person = ModelPeer()
+
+        address1 = ModelPeerAddress()
+        address1.email = 'contactholmember@parliament.uk'
+        person.addresses.append(address1)
+
+        address2 = ModelPeerAddress()
+        address2.email = 'victor@leadershipinmind.co.uk'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getEmail(), 'victor@leadershipinmind.co.uk')
+
+
+    def test_emailPeer2(self):
+        person = ModelPeer()
+
+        address1 = ModelPeerAddress()
+        # note space at end - real data
+        address1.email = 'contactholmember@parliament.uk '
+        person.addresses.append(address1)
+
+        address2 = ModelPeerAddress()
+        address2.email = 'victor@leadershipinmind.co.uk'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getEmail(), 'victor@leadershipinmind.co.uk')
+
 
 
 if __name__ == '__main__':

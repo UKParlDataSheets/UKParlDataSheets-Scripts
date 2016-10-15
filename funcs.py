@@ -37,6 +37,12 @@ class ModelBase:
 			fb = address.getFacebook()
 			if (fb is not None):
 				return fb
+	def getEmail(self):
+		for address in self.addresses:
+			email = address.getEmail()
+			if (email is not None):
+				return email
+
 
 class ModelAddressBase:
 	def __init__(self):
@@ -78,7 +84,9 @@ class ModelAddressBase:
 		if self.note is not None and self.note.find('www.facebook.com') != -1:
 			url = self.note.split('www.facebook.com').pop(1)
 			return 'https://www.facebook.com' + url
-
+	def getEmail(self):
+		if self.email is not None and self.email.find('@') != -1:
+			return self.email.strip().split(' ').pop(0)
 		
 
 class ModelPeer(ModelBase):
@@ -88,7 +96,9 @@ class ModelPeer(ModelBase):
 class ModelPeerAddress(ModelAddressBase):
 	def __init__(self):
 		ModelAddressBase.__init__(self)
-
+	def getEmail(self):
+		if self.email is not None and self.email.find('@') != -1 and self.email.strip() !=  'contactholmember@parliament.uk':
+			return self.email.strip().split(' ').pop(0)
 
 class ModelMP(ModelBase):
 	def __init__(self):
@@ -266,7 +276,7 @@ def writePeersV1(peers, filename):
 def writePeersSimpleV1(peers, filename):
 	csvfile = open(filename, 'wb')
 	writer = csv.writer(csvfile)
-	headings = ['Member_Id','Dods_Id','Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName','Party','Twitter','FaceBook']
+	headings = ['Member_Id','Dods_Id','Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName','Party','Email','Twitter','FaceBook']
 	writer.writerow(headings)
 	for person in peers:
 		row = [
@@ -278,6 +288,7 @@ def writePeersSimpleV1(peers, filename):
 			person.fullTitle,
 			person.layingMinisterName,
 			person.party,
+			person.getEmail(),
 			person.getTwitter(),
 			person.getFacebook(),
 		]
@@ -412,7 +423,7 @@ def writeMPsV1(mps, filename):
 def writeMPsSimpleV1(mps, filename):
 	csvfile = open(filename, 'wb')
 	writer = csv.writer(csvfile)
-	headings = ['Member_Id','Dods_Id','Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName','Party','Twitter','FaceBook']
+	headings = ['Member_Id','Dods_Id','Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName','Party','Email','Twitter','FaceBook']
 	writer.writerow(headings)
 	for person in mps:
 		row = [
@@ -424,6 +435,7 @@ def writeMPsSimpleV1(mps, filename):
 			person.fullTitle,
 			person.layingMinisterName,
 			person.party,
+			person.getEmail(),
 			person.getTwitter(),
 			person.getFacebook(),
 		]
