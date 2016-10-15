@@ -2,6 +2,11 @@ import unittest
 from funcs import *
 
 
+#
+# License 3 clause BSD https://github.com/UKParlDataSheets/UKParlDataSheets-Scripts
+#
+
+
 class TestTwitter(unittest.TestCase):
 
 

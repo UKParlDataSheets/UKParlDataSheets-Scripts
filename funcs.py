@@ -4,6 +4,11 @@ import csv
 import boto3
 
 
+#
+# License 3 clause BSD https://github.com/UKParlDataSheets/UKParlDataSheets-Scripts
+#
+
+
 class ModelBase:
     def __init__(self):
         self.memberId = None
