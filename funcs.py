@@ -293,7 +293,7 @@ def writePeersV1(peers, filename):
 def writePeersSimpleV1(peers, filename):
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
-    headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'Party',
+    headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName',  'MemberFrom','Party',
                 'Email', 'Twitter', 'FaceBook']
     writer.writerow(headings)
     for person in peers:
@@ -305,6 +305,7 @@ def writePeersSimpleV1(peers, filename):
             person.listAs,
             person.fullTitle,
             person.layingMinisterName,
+            person.memberFrom,
             person.party,
             person.getEmail(),
             person.getTwitter(),
@@ -445,7 +446,7 @@ def writeMPsV1(mps, filename):
 def writeMPsSimpleV1(mps, filename):
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
-    headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'Party',
+    headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'MemberFrom', 'Party',
                 'Email', 'Twitter', 'FaceBook']
     writer.writerow(headings)
     for person in mps:
@@ -457,6 +458,7 @@ def writeMPsSimpleV1(mps, filename):
             person.listAs,
             person.fullTitle,
             person.layingMinisterName,
+            person.memberFrom,
             person.party,
             person.getEmail(),
             person.getTwitter(),
