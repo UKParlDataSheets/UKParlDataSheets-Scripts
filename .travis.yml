@@ -5,6 +5,11 @@ python:
 
 install:
   - pip install boto3
+  - pip install pep8
+
+
+before_script:
+  - pep8 *.py || true
 
 script: python tests.py
 
