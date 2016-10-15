@@ -3,12 +3,12 @@ from funcs import *
 
 
 #
-# License 3 clause BSD https://github.com/UKParlDataSheets/UKParlDataSheets-Scripts
+# License 3 clause BSD
+# https://github.com/UKParlDataSheets/UKParlDataSheets-Scripts
 #
 
 
 class TestTwitter(unittest.TestCase):
-
 
     def test_noCrashOnNone1(self):
         person = ModelBase()
@@ -19,8 +19,6 @@ class TestTwitter(unittest.TestCase):
         self.assertEqual(person.getTwitter(), None)
         self.assertEqual(person.getFacebook(), None)
         self.assertEqual(person.getEmail(), None)
-
-
 
     def test_twitter1(self):
         person = ModelBase()
@@ -36,7 +34,6 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getTwitter(), 'LizBarkerLords')
 
-
     def test_twitter2(self):
         person = ModelBase()
 
@@ -50,8 +47,6 @@ class TestTwitter(unittest.TestCase):
         person.addresses.append(address2)
 
         self.assertEqual(person.getTwitter(), 'TariqBt1')
-
-
 
     def test_twitter3(self):
         person = ModelBase()
@@ -81,8 +76,6 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getTwitter(), 'LordRoyKennedy')
 
-
-
     def test_twitter5(self):
         person = ModelBase()
 
@@ -96,7 +89,6 @@ class TestTwitter(unittest.TestCase):
         person.addresses.append(address2)
 
         self.assertEqual(person.getTwitter(), 'delythjmorgan')
-
 
     def test_facebook1(self):
         person = ModelBase()
@@ -112,8 +104,6 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getFacebook(), 'https://www.facebook.com/marycreaghwakefield')
 
-
-
     def test_facebook2(self):
         person = ModelBase()
 
@@ -127,7 +117,6 @@ class TestTwitter(unittest.TestCase):
         person.addresses.append(address2)
 
         self.assertEqual(person.getFacebook(), 'http://www.facebook.com/JeremyCorbynMP/')
-
 
     def test_facebook3(self):
         person = ModelBase()
@@ -143,8 +132,6 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getFacebook(), 'https://en-gb.facebook.com/LordAltonofLiverpool/')
 
-
-
     def test_twitterAndFacebook1(self):
         person = ModelBase()
 
@@ -159,7 +146,6 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getTwitter(), 'chiefrabbi')
         self.assertEqual(person.getFacebook(), 'https://www.facebook.com/lordsacks')
-
 
     def test_twitterAndFacebook2(self):
         person = ModelBase()
@@ -190,7 +176,6 @@ class TestTwitter(unittest.TestCase):
         person.addresses.append(address2)
 
         self.assertEqual(person.getEmail(), None)
-
 
     def test_email2(self):
         person = ModelBase()
@@ -248,7 +233,6 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getEmail(), 'damian.gannon@parliament.uk')
 
-
     def test_emailPeer1(self):
         person = ModelPeer()
 
@@ -261,7 +245,6 @@ class TestTwitter(unittest.TestCase):
         person.addresses.append(address2)
 
         self.assertEqual(person.getEmail(), 'victor@leadershipinmind.co.uk')
-
 
     def test_emailPeer2(self):
         person = ModelPeer()
@@ -276,7 +259,6 @@ class TestTwitter(unittest.TestCase):
         person.addresses.append(address2)
 
         self.assertEqual(person.getEmail(), 'victor@leadershipinmind.co.uk')
-
 
 
 if __name__ == '__main__':

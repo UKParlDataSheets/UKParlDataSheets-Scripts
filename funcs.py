@@ -5,7 +5,8 @@ import boto3
 
 
 #
-# License 3 clause BSD https://github.com/UKParlDataSheets/UKParlDataSheets-Scripts
+# License 3 clause BSD
+# https://github.com/UKParlDataSheets/UKParlDataSheets-Scripts
 #
 
 
@@ -301,7 +302,7 @@ def writePeersV1(peers, filename):
 def writePeersSimpleV1(peers, filename):
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
-    headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName',  'MemberFrom','Party',
+    headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'MemberFrom', 'Party',
                 'Email', 'Twitter', 'FaceBook']
     writer.writerow(headings)
     for person in peers:
