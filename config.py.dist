@@ -2,8 +2,8 @@
 import tempfile
 
 CONFIG = { 
-	'DIRECTORY': tempfile.gettempdir(),
-	'AWS_ACCESS_KEY' : 'xxxxxx',
-	'AWS_SECRET_KEY' : 'xxxxxx',
-	'AWS_BUCKET_NAME': 'xxxxxx',
+    'DIRECTORY': tempfile.gettempdir(),
+    'AWS_ACCESS_KEY' : 'xxxxxx',
+    'AWS_SECRET_KEY' : 'xxxxxx',
+    'AWS_BUCKET_NAME': 'xxxxxx',
 }
