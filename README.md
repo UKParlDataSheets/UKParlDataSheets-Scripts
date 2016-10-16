@@ -6,6 +6,12 @@ These are the scripts that build and upload the data for that site.
 
 ## Setting up
 
+This is written and tested on Python 2.7.
+
+Needed libraries:
+
+  *  boto3
+
 Copy "config.py.dist" to "config.py" and edit.
 
 The AWS user should have the putObject permission on the bucket.
