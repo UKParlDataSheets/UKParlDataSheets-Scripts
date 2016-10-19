@@ -260,6 +260,202 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.getEmail(), 'victor@leadershipinmind.co.uk')
 
+    def test_getParliamentaryPhoneAndFax1(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '0207 219 2807'
+        address2.fax = '020 7219 5979'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), '0207 219 2807')
+        self.assertEqual(person.getParliamentaryFax(), '020 7219 5979')
+
+    def test_getParliamentaryPhoneAndFax2(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '020 7219 1041 Fax: 0207 219 2405'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), '020 7219 1041')
+        self.assertEqual(person.getParliamentaryFax(), '0207 219 2405')
+
+    def test_getParliamentaryPhoneAndFax3(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '020 7219 3547, 020 7219 5099'
+        address2.fax = '020 7219 4614'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), '020 7219 3547')
+        self.assertEqual(person.getParliamentaryFax(), '020 7219 4614')
+
+    def test_getParliamentaryPhoneAndFax4(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '020 7219 4432; 020 7219 6306'
+        address2.fax = '020 7219 5952'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), '020 7219 4432')
+        self.assertEqual(person.getParliamentaryFax(), '020 7219 5952')
+
+    def test_getParliamentaryPhoneAndFax5(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '020 7219 5135; 020 7219 2088; Fax 020 7219 4780'
+        address2.fax = ''
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), '020 7219 5135')
+        self.assertEqual(person.getParliamentaryFax(), '020 7219 4780')
+
+    def test_getParliamentaryPhoneAndFax6(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '01709 331035/331036'
+        address2.fax = ''
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), None)
+        self.assertEqual(person.getParliamentaryFax(), None)
+
+    def test_getParliamentaryPhoneAndFax7(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '020 7219 4936 (Office contact)'
+        address2.fax = ''
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), '020 7219 4936')
+        self.assertEqual(person.getParliamentaryFax(), None)
+
+    def test_getParliamentaryPhoneAndFax8(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '01308 456891'
+        address2.fax = ''
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), None)
+        self.assertEqual(person.getParliamentaryFax(), None)
+
+    def test_getParliamentaryPhoneAndFax9(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '0777 556 2776 / 020 7219 5353'
+        address2.fax = ''
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), '020 7219 5353')
+        self.assertEqual(person.getParliamentaryFax(), None)
+
+    def test_getParliamentaryPhoneAndFax10(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = '020 7219 5480   Fax. 020 7219 5979'
+        address2.fax = ''
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), '020 7219 5480')
+        self.assertEqual(person.getParliamentaryFax(), '020 7219 5979')
+
+    def test_getParliamentaryPhoneAndFax11(self):
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.type = 'External/Private Office'
+        address1.address1 = 'My House'
+        address1.address2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.type = 'Parliamentary'
+        address2.phone = 'Tel: 020 7219 5353'
+        address2.fax = ''
+        person.addresses.append(address2)
+
+        self.assertEqual(person.getParliamentaryPhone(), '020 7219 5353')
+        self.assertEqual(person.getParliamentaryFax(), None)
 
 if __name__ == '__main__':
     unittest.main()

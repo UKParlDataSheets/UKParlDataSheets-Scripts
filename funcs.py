@@ -52,6 +52,41 @@ class ModelBase:
             if (email is not None):
                 return email
 
+    def getParliamentaryPhone(self):
+        for address in self.addresses:
+            if address.type == 'Parliamentary':
+                phone = address.phone.strip() if address.phone is not None else None
+                if phone is not None:
+                    if phone.startswith('Tel: '):
+                        phone = phone[5:]
+                    if phone.endswith(' (Office contact)'):
+                        phone = phone[:-17]
+                    if phone.find('Fax') != -1:
+                        bits = address.phone.split('Fax')
+                        phone = bits.pop(0).strip()
+                    for char in [';', ',', '/']:
+                        if phone.find(char) != -1:
+                            phones = phone.split(char)
+                            for phoneBit in phones:
+                                if phoneBit.strip().startswith('020'):
+                                    return phoneBit.strip()
+                    if phone.strip().startswith('020'):
+                        return phone.strip()
+
+    def getParliamentaryFax(self):
+        for address in self.addresses:
+            if address.type == 'Parliamentary':
+                if address.fax != '' and address.fax is not None:
+                    return address.fax
+                if address.phone is not None and address.phone.find('Fax') != -1:
+                    bits = address.phone.split('Fax')
+                    fax = bits.pop(1).strip()
+                    if fax.startswith('.'):
+                        fax = fax[1:]
+                    if fax.startswith(':'):
+                        fax = fax[1:]
+                    return fax.strip()
+
 
 class ModelAddressBase:
     def __init__(self):
@@ -303,7 +338,7 @@ def writePeersSimpleV1(peers, filename):
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'MemberFrom', 'Party',
-                'Email', 'Twitter', 'FaceBook']
+                'Email', 'Twitter', 'FaceBook', 'ParliamentaryPhone', 'ParliamentaryFax']
     writer.writerow(headings)
     for person in peers:
         row = [
@@ -319,6 +354,8 @@ def writePeersSimpleV1(peers, filename):
             person.getEmail(),
             person.getTwitter(),
             person.getFacebook(),
+            person.getParliamentaryPhone(),
+            person.getParliamentaryFax(),
         ]
         writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
     csvfile.close()
@@ -456,7 +493,7 @@ def writeMPsSimpleV1(mps, filename):
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'MemberFrom', 'Party',
-                'Email', 'Twitter', 'FaceBook']
+                'Email', 'Twitter', 'FaceBook', 'ParliamentaryPhone', 'ParliamentaryFax']
     writer.writerow(headings)
     for person in mps:
         row = [
@@ -472,6 +509,8 @@ def writeMPsSimpleV1(mps, filename):
             person.getEmail(),
             person.getTwitter(),
             person.getFacebook(),
+            person.getParliamentaryPhone(),
+            person.getParliamentaryFax(),
         ]
         writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
     csvfile.close()
