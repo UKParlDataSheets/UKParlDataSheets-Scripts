@@ -11,6 +11,7 @@ import boto3
 
 
 class ModelBase:
+    """Base Model for an MP or a Peer. Should not be used directly - Abstract class."""
     def __init__(self):
         self.memberId = None
         self.dobsId = None
@@ -35,24 +36,28 @@ class ModelBase:
         self.addresses = []
 
     def getTwitter(self):
+        """Gets Twitter Username."""
         for address in self.addresses:
             twitter = address.getTwitter()
             if (twitter is not None):
                 return twitter
 
     def getFacebook(self):
+        """Gets Facebook URL."""
         for address in self.addresses:
             fb = address.getFacebook()
             if (fb is not None):
                 return fb
 
     def getEmail(self):
+        """Gets Email Address"""
         for address in self.addresses:
             email = address.getEmail()
             if (email is not None):
                 return email
 
     def getParliamentaryPhone(self):
+        """Gets phone number on the Parliamentary record."""
         for address in self.addresses:
             if address.type == 'Parliamentary':
                 phone = address.phone.strip() if address.phone is not None else None
@@ -74,6 +79,7 @@ class ModelBase:
                         return phone.strip()
 
     def getParliamentaryFax(self):
+        """Gets fax number on the Parliamentary record."""
         for address in self.addresses:
             if address.type == 'Parliamentary':
                 if address.fax != '' and address.fax is not None:
@@ -89,6 +95,7 @@ class ModelBase:
 
 
 class ModelAddressBase:
+    """Base Model for an Address for an MP or a Peer.  Should not be used directly - Abstract class."""
     def __init__(self):
         self.typeId = None
         self.type = None
@@ -106,6 +113,7 @@ class ModelAddressBase:
         self.email = None
 
     def getTwitter(self):
+        """Gets Twitter Username."""
         if self.address1 is not None and self.address1.startswith('https://twitter.com/'):
             return self.address1[20:].split('?').pop(0)
         if self.note is not None and self.note.startswith('Twitter: @'):
@@ -116,6 +124,7 @@ class ModelAddressBase:
             return self.note[11:]
 
     def getFacebook(self):
+        """Gets Facebook URL."""
         if self.address1 is not None and self.address1.startswith('https://www.facebook.com/'):
             return self.address1
         if self.address1 is not None and self.address1.startswith('http://www.facebook.com/'):
@@ -132,44 +141,53 @@ class ModelAddressBase:
             return 'https://www.facebook.com' + url
 
     def getEmail(self):
+        """Gets Email Address"""
         if self.email is not None and self.email.find('@') != -1:
             return self.email.strip().split(' ').pop(0)
 
 
 class ModelPeer(ModelBase):
+    """Model for a Peer."""
     def __init__(self):
         ModelBase.__init__(self)
 
 
 class ModelPeerAddress(ModelAddressBase):
+    """Model for an Address for a Peer."""
     def __init__(self):
         ModelAddressBase.__init__(self)
 
     def getEmail(self):
+        """Gets Email Address"""
         if self.email is not None and self.email.find(
                 '@') != -1 and self.email.strip() != 'contactholmember@parliament.uk':
             return self.email.strip().split(' ').pop(0)
 
 
 class ModelMP(ModelBase):
+    """Model for a MP."""
     def __init__(self):
         ModelBase.__init__(self)
 
     def getConstituencyPostalAddress(self):
+        """Gets postal Address record for the Constituency."""
         for address in self.addresses:
             if address.isConstituencyPostalAddress():
                 return address
 
 
 class ModelMPAddress(ModelAddressBase):
+    """Model for an Address for a MP."""
     def __init__(self):
         ModelAddressBase.__init__(self)
 
     def isConstituencyPostalAddress(self):
+        """Is this a postal address record for the Constituency? Checks type and if there is an adddress there."""
         return self.type == 'Constituency' and ((self.address2 != '' and self.address2 is not None) or (self.postcode != '' and self.postcode is not None))
 
 
 def go(config, upload=False):
+    """Call this to do work - this calls other functions needed."""
     peersXMLFileName = config['DIRECTORY'] + '/peers.xml'
     downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Lords/Addresses/',
                  peersXMLFileName)
@@ -205,6 +223,7 @@ def go(config, upload=False):
 
 
 def downloadData(url, filename):
+    """Downloads data from Web and saves to local file. Raises Exception if there was a problem."""
     response = urllib2.urlopen(url)
     if (response.info().gettype() != 'application/xml'):
         raise Exception('Problem Getting Data')
@@ -215,6 +234,7 @@ def downloadData(url, filename):
 
 
 def processPeers(peersXMLFileName):
+    """Processes the local XML of Peers data and returns data objects in memory."""
     tree = ET.parse(peersXMLFileName)
     root = tree.getroot()
     peers = []
@@ -266,6 +286,7 @@ def processPeers(peersXMLFileName):
 
 
 def writePeersV1(peers, filename):
+    """Writes in-memory data objects about Peers to an external file."""
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName',
@@ -343,6 +364,7 @@ def writePeersV1(peers, filename):
 
 
 def writePeersSimpleV1(peers, filename):
+    """Writes in-memory data objects about Peers to an external file."""
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'MemberFrom', 'Party',
@@ -370,6 +392,7 @@ def writePeersSimpleV1(peers, filename):
 
 
 def processMPs(filename):
+    """Processes the local XML of MPs data and returns data objects in memory."""
     tree = ET.parse(filename)
     root = tree.getroot()
     mps = []
@@ -421,6 +444,7 @@ def processMPs(filename):
 
 
 def writeMPsV1(mps, filename):
+    """Writes in-memory data objects about MPs to an external file."""
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName',
@@ -498,6 +522,7 @@ def writeMPsV1(mps, filename):
 
 
 def writeMPsSimpleV1(mps, filename):
+    """Writes in-memory data objects about MPs to an external file."""
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'MemberFrom', 'Party',
@@ -534,6 +559,7 @@ def writeMPsSimpleV1(mps, filename):
 
 
 def uploadToS3(config, file, key):
+    """Uploads local file to a S3 Bucket."""
     client = boto3.client(
         's3',
         aws_access_key_id=config['AWS_ACCESS_KEY'],

@@ -16,11 +16,15 @@ Copy "config.py.dist" to "config.py" and edit.
 
 The AWS user should have the putObject permission on the bucket.
 
-## Running Tests
+## Running Project
 
 To run unit tests:
 
     python tests.py
+
+To build docs:
+
+    pydoc -w funcs tests
 
 To run scripts to create data but not upload (useful for local testing):
 
