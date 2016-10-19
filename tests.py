@@ -457,5 +457,36 @@ class TestTwitter(unittest.TestCase):
         self.assertEqual(person.getParliamentaryPhone(), '020 7219 5353')
         self.assertEqual(person.getParliamentaryFax(), None)
 
+    def test_getConstituencyPostalAddress1(self):
+        person = ModelMP()
+
+        address1 = ModelMPAddress()
+        address1.type = 'Parliamentary'
+        address1.address1 = 'House of Commons'
+        person.addresses.append(address1)
+
+        address2 = ModelMPAddress()
+        address2.type = 'Constituency'
+        address2.address1 = '94A Town Street'
+        address2.address2 = 'Horsforth'
+        person.addresses.append(address2)
+
+        self.assertEquals(person.getConstituencyPostalAddress().address1, '94A Town Street')
+
+    def test_getConstituencyPostalAddress2(self):
+        person = ModelMP()
+
+        address1 = ModelMPAddress()
+        address1.type = 'Parliamentary'
+        address1.address1 = 'House of Commons'
+        person.addresses.append(address1)
+
+        address2 = ModelMPAddress()
+        address2.type = 'Constituency'
+        address2.address1 = 'No constituency office publicised'
+        person.addresses.append(address2)
+
+        self.assertEquals(person.getConstituencyPostalAddress(), None)
+
 if __name__ == '__main__':
     unittest.main()

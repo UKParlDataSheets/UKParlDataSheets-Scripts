@@ -155,10 +155,18 @@ class ModelMP(ModelBase):
     def __init__(self):
         ModelBase.__init__(self)
 
+    def getConstituencyPostalAddress(self):
+        for address in self.addresses:
+            if address.isConstituencyPostalAddress():
+                return address
+
 
 class ModelMPAddress(ModelAddressBase):
     def __init__(self):
         ModelAddressBase.__init__(self)
+
+    def isConstituencyPostalAddress(self):
+        return self.type == 'Constituency' and ((self.address2 != '' and self.address2 is not None) or (self.postcode != '' and self.postcode is not None))
 
 
 def go(config, upload=False):
@@ -390,7 +398,7 @@ def processMPs(filename):
             person.currentStatusReason = currentStatus.find('Reason').text
             person.currentStatusStartDate = currentStatus.find('StartDate').text
         for addressRoot in child.find('Addresses').findall('Address'):
-            address = ModelPeerAddress()
+            address = ModelMPAddress()
             address.typeId = addressRoot.attrib['Type_Id']
             address.type = addressRoot.find('Type').text if addressRoot.find('Type') is not None else None
             address.isPreferred = addressRoot.find('IsPreferred').text if addressRoot.find(
@@ -493,7 +501,8 @@ def writeMPsSimpleV1(mps, filename):
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'MemberFrom', 'Party',
-                'Email', 'Twitter', 'FaceBook', 'ParliamentaryPhone', 'ParliamentaryFax']
+                'Email', 'Twitter', 'FaceBook', 'ParliamentaryPhone', 'ParliamentaryFax',
+                'ConstituencyPostalAddress1', 'ConstituencyPostalAddress2', 'ConstituencyPostalAddress3', 'ConstituencyPostalAddress4', 'ConstituencyPostalAddress5', 'ConstituencyPostCode']
     writer.writerow(headings)
     for person in mps:
         row = [
@@ -512,6 +521,14 @@ def writeMPsSimpleV1(mps, filename):
             person.getParliamentaryPhone(),
             person.getParliamentaryFax(),
         ]
+        constituencyPostalAddress = person.getConstituencyPostalAddress()
+        if constituencyPostalAddress is not None:
+            row.append(constituencyPostalAddress.address1)
+            row.append(constituencyPostalAddress.address2)
+            row.append(constituencyPostalAddress.address3)
+            row.append(constituencyPostalAddress.address4)
+            row.append(constituencyPostalAddress.address5)
+            row.append(constituencyPostalAddress.postcode)
         writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
     csvfile.close()
 
