@@ -190,7 +190,7 @@ def go(config, upload=False):
     """Call this to do work - this calls other functions needed."""
     peers_xml_file_name = config['DIRECTORY'] + '/peers.xml'
     download_data('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Lords/Addresses/',
-                 peers_xml_file_name)
+                  peers_xml_file_name)
     peers = process_data(peers_xml_file_name, lambda: ModelPeer(), lambda: ModelPeerAddress())
 
     peers_csv_v1_file_name = config['DIRECTORY'] + '/peers-v1.csv'
@@ -208,7 +208,7 @@ def go(config, upload=False):
 
     mps_xml_file_name = config['DIRECTORY'] + '/mps.xml'
     download_data('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',
-                 mps_xml_file_name)
+                  mps_xml_file_name)
     mps = process_data(mps_xml_file_name, lambda: ModelMP(), lambda: ModelMPAddress())
 
     mps_csv_v1_file_name = config['DIRECTORY'] + '/mps-v1.csv'
