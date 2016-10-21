@@ -45,9 +45,9 @@ class ModelBase:
     def get_facebook(self):
         """Gets Facebook URL."""
         for address in self.addresses:
-            fb = address.get_facebook()
-            if fb is not None:
-                return fb
+            facebook = address.get_facebook()
+            if facebook is not None:
+                return facebook
 
     def get_email(self):
         """Gets Email Address"""
@@ -72,9 +72,9 @@ class ModelBase:
                     for char in [';', ',', '/']:
                         if phone.find(char) != -1:
                             phones = phone.split(char)
-                            for phoneBit in phones:
-                                if phoneBit.strip().startswith('020'):
-                                    return phoneBit.strip()
+                            for phone_bit in phones:
+                                if phone_bit.strip().startswith('020'):
+                                    return phone_bit.strip()
                     if phone.strip().startswith('020'):
                         return phone.strip()
 
@@ -188,38 +188,38 @@ class ModelMPAddress(ModelAddressBase):
 
 def go(config, upload=False):
     """Call this to do work - this calls other functions needed."""
-    peersXMLFileName = config['DIRECTORY'] + '/peers.xml'
+    peers_xml_file_name = config['DIRECTORY'] + '/peers.xml'
     download_data('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Lords/Addresses/',
-                 peersXMLFileName)
-    peers = process_data(peersXMLFileName, lambda: ModelPeer(), lambda: ModelPeerAddress())
+                 peers_xml_file_name)
+    peers = process_data(peers_xml_file_name, lambda: ModelPeer(), lambda: ModelPeerAddress())
 
-    peersCSVV1FileName = config['DIRECTORY'] + '/peers-v1.csv'
-    write_data_v1(peers, peersCSVV1FileName)
+    peers_csv_v1_file_name = config['DIRECTORY'] + '/peers-v1.csv'
+    write_data_v1(peers, peers_csv_v1_file_name)
     if upload:
-        uploadToS3(config, peersCSVV1FileName, 'lordsV1.csv')
+        uploadToS3(config, peers_csv_v1_file_name, 'lordsV1.csv')
 
-    peersSimpleCSVV1FileName = config['DIRECTORY'] + '/peers-simple-v1.csv'
-    write_peers_simple_v1(peers, peersSimpleCSVV1FileName)
+    peers_simple_csv_v1_file_name = config['DIRECTORY'] + '/peers-simple-v1.csv'
+    write_peers_simple_v1(peers, peers_simple_csv_v1_file_name)
     if upload:
-        upload_to_s3(config, peersSimpleCSVV1FileName, 'lordsSimpleV1.csv')
+        upload_to_s3(config, peers_simple_csv_v1_file_name, 'lordsSimpleV1.csv')
 
     # we don't needs this again, so clear it to save some memory.
     peers = None
 
-    mpsXMLFileName = config['DIRECTORY'] + '/mps.xml'
+    mps_xml_file_name = config['DIRECTORY'] + '/mps.xml'
     download_data('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',
-                 mpsXMLFileName)
-    mps = process_data(mpsXMLFileName, lambda: ModelMP(), lambda: ModelMPAddress())
+                 mps_xml_file_name)
+    mps = process_data(mps_xml_file_name, lambda: ModelMP(), lambda: ModelMPAddress())
 
-    mpsCSVV1FileName = config['DIRECTORY'] + '/mps-v1.csv'
-    write_data_v1(mps, mpsCSVV1FileName)
+    mps_csv_v1_file_name = config['DIRECTORY'] + '/mps-v1.csv'
+    write_data_v1(mps, mps_csv_v1_file_name)
     if upload:
-        uploadToS3(config, mpsCSVV1FileName, 'commonsV1.csv')
+        uploadToS3(config, mps_csv_v1_file_name, 'commonsV1.csv')
 
-    mpsSimpleCSVV1FileName = config['DIRECTORY'] + '/mps-simple-v1.csv'
-    write_mps_simple_v1(mps, mpsSimpleCSVV1FileName)
+    mps_simple_csv_v1_file_name = config['DIRECTORY'] + '/mps-simple-v1.csv'
+    write_mps_simple_v1(mps, mps_simple_csv_v1_file_name)
     if upload:
-        upload_to_s3(config, mpsSimpleCSVV1FileName, 'commonsSimpleV1.csv')
+        upload_to_s3(config, mps_simple_csv_v1_file_name, 'commonsSimpleV1.csv')
 
 
 def download_data(url, filename):
@@ -255,31 +255,31 @@ def process_data(peersXMLFileName, newPersonFunction, newAddressFunction):
         person.memberFrom = child.find('MemberFrom').text
         person.houseStartDate = child.find('HouseStartDate').text
         person.houseEndDate = child.find('HouseEndDate').text
-        currentStatus = child.find('CurrentStatus')
-        if currentStatus is not None:
-            person.currentStatusID = currentStatus.attrib['Id']
-            person.currentStatusIsActive = currentStatus.attrib['IsActive']
-            person.currentStatusName = currentStatus.find('Name').text
-            person.currentStatusReason = currentStatus.find('Reason').text
-            person.currentStatusStartDate = currentStatus.find('StartDate').text
-        for addressRoot in child.find('Addresses').findall('Address'):
+        current_status = child.find('CurrentStatus')
+        if current_status is not None:
+            person.currentStatusID = current_status.attrib['Id']
+            person.currentStatusIsActive = current_status.attrib['IsActive']
+            person.currentStatusName = current_status.find('Name').text
+            person.currentStatusReason = current_status.find('Reason').text
+            person.currentStatusStartDate = current_status.find('StartDate').text
+        for address_root in child.find('Addresses').findall('Address'):
             address = newAddressFunction()
-            address.typeId = addressRoot.attrib['Type_Id']
-            address.type = addressRoot.find('Type').text if addressRoot.find('Type') is not None else None
-            address.isPreferred = addressRoot.find('IsPreferred').text if addressRoot.find(
+            address.typeId = address_root.attrib['Type_Id']
+            address.type = address_root.find('Type').text if address_root.find('Type') is not None else None
+            address.isPreferred = address_root.find('IsPreferred').text if address_root.find(
                 'IsPreferred') is not None else None
-            address.isPhysical = addressRoot.find('IsPhysical').text if addressRoot.find(
+            address.isPhysical = address_root.find('IsPhysical').text if address_root.find(
                 'IsPhysical') is not None else None
-            address.note = addressRoot.find('Note').text if addressRoot.find('Note') is not None else None
-            address.address1 = addressRoot.find('Address1').text if addressRoot.find('Address1') is not None else None
-            address.address2 = addressRoot.find('Address2').text if addressRoot.find('Address2') is not None else None
-            address.address3 = addressRoot.find('Address3').text if addressRoot.find('Address3') is not None else None
-            address.address4 = addressRoot.find('Address4').text if addressRoot.find('Address4') is not None else None
-            address.address5 = addressRoot.find('Address5').text if addressRoot.find('Address5') is not None else None
-            address.postcode = addressRoot.find('Postcode').text if addressRoot.find('Postcode') is not None else None
-            address.phone = addressRoot.find('Phone').text if addressRoot.find('Phone') is not None else None
-            address.fax = addressRoot.find('Fax').text if addressRoot.find('Fax') is not None else None
-            address.email = addressRoot.find('Email').text if addressRoot.find('Email') is not None else None
+            address.note = address_root.find('Note').text if address_root.find('Note') is not None else None
+            address.address1 = address_root.find('Address1').text if address_root.find('Address1') is not None else None
+            address.address2 = address_root.find('Address2').text if address_root.find('Address2') is not None else None
+            address.address3 = address_root.find('Address3').text if address_root.find('Address3') is not None else None
+            address.address4 = address_root.find('Address4').text if address_root.find('Address4') is not None else None
+            address.address5 = address_root.find('Address5').text if address_root.find('Address5') is not None else None
+            address.postcode = address_root.find('Postcode').text if address_root.find('Postcode') is not None else None
+            address.phone = address_root.find('Phone').text if address_root.find('Phone') is not None else None
+            address.fax = address_root.find('Fax').text if address_root.find('Fax') is not None else None
+            address.email = address_root.find('Email').text if address_root.find('Email') is not None else None
             person.addresses.append(address)
         data.append(person)
     return data
@@ -287,8 +287,8 @@ def process_data(peersXMLFileName, newPersonFunction, newAddressFunction):
 
 def write_data_v1(people, filename):
     """Writes in-memory data objects about Peers or MPs to an external file."""
-    csvfile = open(filename, 'wb')
-    writer = csv.writer(csvfile)
+    csv_file = open(filename, 'wb')
+    writer = csv.writer(csv_file)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName',
                 'DateOfBirth', 'DateOfDeath', 'Gender',
                 'Party',
@@ -360,13 +360,13 @@ def write_data_v1(people, filename):
                 for x in range(1, 14):
                     row.append(None)
         writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
-    csvfile.close()
+    csv_file.close()
 
 
 def write_peers_simple_v1(peers, filename):
     """Writes in-memory data objects about Peers to an external file."""
-    csvfile = open(filename, 'wb')
-    writer = csv.writer(csvfile)
+    csv_file = open(filename, 'wb')
+    writer = csv.writer(csv_file)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'MemberFrom', 'Party',
                 'Email', 'Twitter', 'FaceBook', 'ParliamentaryPhone', 'ParliamentaryFax']
     writer.writerow(headings)
@@ -388,13 +388,13 @@ def write_peers_simple_v1(peers, filename):
             person.get_parliamentary_fax(),
         ]
         writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
-    csvfile.close()
+    csv_file.close()
 
 
 def write_mps_simple_v1(mps, filename):
     """Writes in-memory data objects about MPs to an external file."""
-    csvfile = open(filename, 'wb')
-    writer = csv.writer(csvfile)
+    csv_file = open(filename, 'wb')
+    writer = csv.writer(csv_file)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName', 'MemberFrom', 'Party',
                 'Email', 'Twitter', 'FaceBook', 'ParliamentaryPhone', 'ParliamentaryFax',
                 'ConstituencyPostalAddress1', 'ConstituencyPostalAddress2', 'ConstituencyPostalAddress3', 'ConstituencyPostalAddress4', 'ConstituencyPostalAddress5', 'ConstituencyPostCode']
@@ -416,16 +416,16 @@ def write_mps_simple_v1(mps, filename):
             person.get_parliamentary_phone(),
             person.get_parliamentary_fax(),
         ]
-        constituencyPostalAddress = person.get_constituency_postal_address()
-        if constituencyPostalAddress is not None:
-            row.append(constituencyPostalAddress.address1)
-            row.append(constituencyPostalAddress.address2)
-            row.append(constituencyPostalAddress.address3)
-            row.append(constituencyPostalAddress.address4)
-            row.append(constituencyPostalAddress.address5)
-            row.append(constituencyPostalAddress.postcode)
+        constituency_postal_address = person.get_constituency_postal_address()
+        if constituency_postal_address is not None:
+            row.append(constituency_postal_address.address1)
+            row.append(constituency_postal_address.address2)
+            row.append(constituency_postal_address.address3)
+            row.append(constituency_postal_address.address4)
+            row.append(constituency_postal_address.address5)
+            row.append(constituency_postal_address.postcode)
         writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
-    csvfile.close()
+    csv_file.close()
 
 
 def upload_to_s3(config, file, key):
