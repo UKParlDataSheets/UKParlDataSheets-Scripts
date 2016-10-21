@@ -6,10 +6,12 @@ python:
 install:
   - pip install boto3
   - pip install pep8
+  - pip install pylint
 
 
 before_script:
   - pep8 *.py || true
+  - pylint funcs.py tests.py
 
 script: python tests.py
 
