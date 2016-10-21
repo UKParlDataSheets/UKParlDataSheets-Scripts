@@ -194,7 +194,7 @@ def go(config, upload=False):
     peers = processPeers(peersXMLFileName)
 
     peersCSVV1FileName = config['DIRECTORY'] + '/peers-v1.csv'
-    writePeersV1(peers, peersCSVV1FileName)
+    writeDataV1(peers, peersCSVV1FileName)
     if upload:
         uploadToS3(config, peersCSVV1FileName, 'lordsV1.csv')
 
@@ -212,7 +212,7 @@ def go(config, upload=False):
     mps = processMPs(mpsXMLFileName)
 
     mpsCSVV1FileName = config['DIRECTORY'] + '/mps-v1.csv'
-    writeMPsV1(mps, mpsCSVV1FileName)
+    writeDataV1(mps, mpsCSVV1FileName)
     if upload:
         uploadToS3(config, mpsCSVV1FileName, 'commonsV1.csv')
 
@@ -285,8 +285,8 @@ def processPeers(peersXMLFileName):
     return peers
 
 
-def writePeersV1(peers, filename):
-    """Writes in-memory data objects about Peers to an external file."""
+def writeDataV1(people, filename):
+    """Writes in-memory data objects about Peers or MPs to an external file."""
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
     headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName',
@@ -317,7 +317,7 @@ def writePeersV1(peers, filename):
         headings.append('Address' + str(i) + '_Fax')
         headings.append('Address' + str(i) + '_Email')
     writer.writerow(headings)
-    for person in peers:
+    for person in people:
         row = [
             person.memberId,
             person.dobsId,
@@ -442,83 +442,6 @@ def processMPs(filename):
         mps.append(person)
     return mps
 
-
-def writeMPsV1(mps, filename):
-    """Writes in-memory data objects about MPs to an external file."""
-    csvfile = open(filename, 'wb')
-    writer = csv.writer(csvfile)
-    headings = ['Member_Id', 'Dods_Id', 'Pims_Id', 'DisplayAs', 'ListAs', 'FullTitle', 'LayingMinisterName',
-                'DateOfBirth', 'DateOfDeath', 'Gender',
-                'Party',
-                'House',
-                'MemberFrom',
-                'HouseStartDate',
-                'HouseEndDate',
-                'CurrentStatus_Id',
-                'CurrentStatus_IsActive',
-                'CurrentStatus_Name',
-                'CurrentStatus_Reason',
-                'CurrentStatus_StartDate']
-    for i in range(1, 5):
-        headings.append('Address' + str(i) + '_Type_Id')
-        headings.append('Address' + str(i) + '_Type')
-        headings.append('Address' + str(i) + '_IsPreferred')
-        headings.append('Address' + str(i) + '_IsPhysical')
-        headings.append('Address' + str(i) + '_Note')
-        headings.append('Address' + str(i) + '_Address1')
-        headings.append('Address' + str(i) + '_Address2')
-        headings.append('Address' + str(i) + '_Address3')
-        headings.append('Address' + str(i) + '_Address4')
-        headings.append('Address' + str(i) + '_Address5')
-        headings.append('Address' + str(i) + '_Postcode')
-        headings.append('Address' + str(i) + '_Phone')
-        headings.append('Address' + str(i) + '_Fax')
-        headings.append('Address' + str(i) + '_Email')
-    writer.writerow(headings)
-    for person in mps:
-        row = [
-            person.memberId,
-            person.dobsId,
-            person.pimsId,
-            person.displayAs,
-            person.listAs,
-            person.fullTitle,
-            person.layingMinisterName,
-            person.dateOfBirth,
-            person.dateOfDeath,
-            person.gender,
-            person.party,
-            person.house,
-            person.memberFrom,
-            person.houseStartDate,
-            person.houseEndDate,
-            person.currentStatusID,
-            person.currentStatusIsActive,
-            person.currentStatusName,
-            person.currentStatusReason,
-            person.currentStatusStartDate,
-        ]
-        for i in range(0, 4):
-            if (len(person.addresses) > i):
-                row.append(person.addresses[i].typeId)
-                row.append(person.addresses[i].type)
-                row.append(person.addresses[i].isPreferred)
-                row.append(person.addresses[i].isPhysical)
-                row.append(person.addresses[i].note)
-                row.append(person.addresses[i].address1)
-                row.append(person.addresses[i].address2)
-                row.append(person.addresses[i].address3)
-                row.append(person.addresses[i].address4)
-                row.append(person.addresses[i].address5)
-                row.append(person.addresses[i].postcode)
-                row.append(person.addresses[i].phone)
-                row.append(person.addresses[i].fax)
-                row.append(person.addresses[i].email)
-        else:
-            for x in range(1, 14):
-                row.append(None)
-        writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
-    csvfile.close()
 
 
 def writeMPsSimpleV1(mps, filename):
