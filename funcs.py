@@ -39,21 +39,21 @@ class ModelBase:
         """Gets Twitter Username."""
         for address in self.addresses:
             twitter = address.getTwitter()
-            if (twitter is not None):
+            if twitter is not None:
                 return twitter
 
     def getFacebook(self):
         """Gets Facebook URL."""
         for address in self.addresses:
             fb = address.getFacebook()
-            if (fb is not None):
+            if fb is not None:
                 return fb
 
     def getEmail(self):
         """Gets Email Address"""
         for address in self.addresses:
             email = address.getEmail()
-            if (email is not None):
+            if email is not None:
                 return email
 
     def getParliamentaryPhone(self):
@@ -225,7 +225,7 @@ def go(config, upload=False):
 def downloadData(url, filename):
     """Downloads data from Web and saves to local file. Raises Exception if there was a problem."""
     response = urllib2.urlopen(url)
-    if (response.info().gettype() != 'application/xml'):
+    if response.info().gettype() != 'application/xml':
         raise Exception('Problem Getting Data')
     data = response.read()
     target = open(filename, 'w')
@@ -256,7 +256,7 @@ def processData(peersXMLFileName, newPersonFunction, newAddressFunction):
         person.houseStartDate = child.find('HouseStartDate').text
         person.houseEndDate = child.find('HouseEndDate').text
         currentStatus = child.find('CurrentStatus')
-        if (currentStatus is not None):
+        if currentStatus is not None:
             person.currentStatusID = currentStatus.attrib['Id']
             person.currentStatusIsActive = currentStatus.attrib['IsActive']
             person.currentStatusName = currentStatus.find('Name').text
@@ -341,7 +341,7 @@ def writeDataV1(people, filename):
             person.currentStatusStartDate,
         ]
         for i in range(0, 4):
-            if (len(person.addresses) > i):
+            if len(person.addresses) > i:
                 row.append(person.addresses[i].typeId)
                 row.append(person.addresses[i].type)
                 row.append(person.addresses[i].isPreferred)
