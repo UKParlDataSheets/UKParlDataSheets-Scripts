@@ -10,18 +10,18 @@ from funcs import *
 
 class TestTwitter(unittest.TestCase):
 
-    def test_noCrashOnNone1(self):
+    def test_no_crash_on_none_1(self):
         """If person has an empty adddress record, test no crashes."""
         person = ModelBase()
 
         address1 = ModelAddressBase()
         person.addresses.append(address1)
 
-        self.assertEqual(person.getTwitter(), None)
-        self.assertEqual(person.getFacebook(), None)
-        self.assertEqual(person.getEmail(), None)
+        self.assertEqual(person.get_twitter(), None)
+        self.assertEqual(person.get_facebook(), None)
+        self.assertEqual(person.get_email(), None)
 
-    def test_twitter1(self):
+    def test_twitter_1(self):
         """Tests getting Twitter when URL in Address1."""
         person = ModelBase()
 
@@ -34,9 +34,9 @@ class TestTwitter(unittest.TestCase):
         address2.address1 = 'https://twitter.com/LizBarkerLords'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getTwitter(), 'LizBarkerLords')
+        self.assertEqual(person.get_twitter(), 'LizBarkerLords')
 
-    def test_twitter2(self):
+    def test_twitter_2(self):
         """Test getting Twitter when it's in a note in one format."""
         person = ModelBase()
 
@@ -49,9 +49,9 @@ class TestTwitter(unittest.TestCase):
         address2.note = 'Twitter: TariqBt1'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getTwitter(), 'TariqBt1')
+        self.assertEqual(person.get_twitter(), 'TariqBt1')
 
-    def test_twitter3(self):
+    def test_twitter_3(self):
         """Test getting Twitter when it's in a note in one format."""
         person = ModelBase()
 
@@ -64,9 +64,9 @@ class TestTwitter(unittest.TestCase):
         address2.note = 'Twitter: @lordphilofbrum'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getTwitter(), 'lordphilofbrum')
+        self.assertEqual(person.get_twitter(), 'lordphilofbrum')
 
-    def test_twitter4(self):
+    def test_twitter_4(self):
         """Tests getting Twitter when URL in Address1, with extra params."""
         person = ModelBase()
 
@@ -79,9 +79,9 @@ class TestTwitter(unittest.TestCase):
         address2.address1 = 'https://twitter.com/LordRoyKennedy?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getTwitter(), 'LordRoyKennedy')
+        self.assertEqual(person.get_twitter(), 'LordRoyKennedy')
 
-    def test_twitter5(self):
+    def test_twitter_5(self):
         """Test getting Twitter when it's in a note in one format."""
         person = ModelBase()
 
@@ -94,9 +94,9 @@ class TestTwitter(unittest.TestCase):
         address2.note = 'Twitter - @delythjmorgan'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getTwitter(), 'delythjmorgan')
+        self.assertEqual(person.get_twitter(), 'delythjmorgan')
 
-    def test_facebook1(self):
+    def test_facebook_1(self):
         """Tests getting Facebook when HTTPS URL in Address1."""
         person = ModelBase()
 
@@ -109,9 +109,9 @@ class TestTwitter(unittest.TestCase):
         address2.address1 = 'https://www.facebook.com/marycreaghwakefield'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getFacebook(), 'https://www.facebook.com/marycreaghwakefield')
+        self.assertEqual(person.get_facebook(), 'https://www.facebook.com/marycreaghwakefield')
 
-    def test_facebook2(self):
+    def test_facebook_2(self):
         """Tests getting Facebook when HTTP URL in Address1."""
         person = ModelBase()
 
@@ -124,9 +124,9 @@ class TestTwitter(unittest.TestCase):
         address2.address1 = 'http://www.facebook.com/JeremyCorbynMP/'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getFacebook(), 'http://www.facebook.com/JeremyCorbynMP/')
+        self.assertEqual(person.get_facebook(), 'http://www.facebook.com/JeremyCorbynMP/')
 
-    def test_facebook3(self):
+    def test_facebook_3(self):
         """Tests getting Facebook when HTTPS URL with country/lang in Address1."""
         person = ModelBase()
 
@@ -139,9 +139,9 @@ class TestTwitter(unittest.TestCase):
         address2.address1 = 'https://en-gb.facebook.com/LordAltonofLiverpool/'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getFacebook(), 'https://en-gb.facebook.com/LordAltonofLiverpool/')
+        self.assertEqual(person.get_facebook(), 'https://en-gb.facebook.com/LordAltonofLiverpool/')
 
-    def test_twitterAndFacebook1(self):
+    def test_twitter_and_facebook_1(self):
         """Tests getting Twitter and Facebook when combined in one note in one format."""
         person = ModelBase()
 
@@ -154,10 +154,10 @@ class TestTwitter(unittest.TestCase):
         address2.note = 'Twitter: @chiefrabbi, Facebook: www.facebook.com/lordsacks'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getTwitter(), 'chiefrabbi')
-        self.assertEqual(person.getFacebook(), 'https://www.facebook.com/lordsacks')
+        self.assertEqual(person.get_twitter(), 'chiefrabbi')
+        self.assertEqual(person.get_facebook(), 'https://www.facebook.com/lordsacks')
 
-    def test_twitterAndFacebook2(self):
+    def test_twitter_and_facebook_2(self):
         """Tests getting Twitter and Facebook when combined in one note in one format."""
         person = ModelBase()
 
@@ -170,10 +170,10 @@ class TestTwitter(unittest.TestCase):
         address2.note = 'Twitter: @johnsentamu ; www.facebook.com/pages/John-Sentamu/25396296321'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getTwitter(), 'johnsentamu')
-        self.assertEqual(person.getFacebook(), 'https://www.facebook.com/pages/John-Sentamu/25396296321')
+        self.assertEqual(person.get_twitter(), 'johnsentamu')
+        self.assertEqual(person.get_facebook(), 'https://www.facebook.com/pages/John-Sentamu/25396296321')
 
-    def test_email1(self):
+    def test_email_1(self):
         """Tests not getting an email when a postcode is supplied instead."""
         person = ModelBase()
 
@@ -187,9 +187,9 @@ class TestTwitter(unittest.TestCase):
         address2.email = 'FK10 3SA'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getEmail(), None)
+        self.assertEqual(person.get_email(), None)
 
-    def test_email2(self):
+    def test_email_2(self):
         """Test getting email when in email field."""
         person = ModelBase()
 
@@ -202,9 +202,9 @@ class TestTwitter(unittest.TestCase):
         address2.email = 'tas.mp@parliament.uk'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getEmail(), 'tas.mp@parliament.uk')
+        self.assertEqual(person.get_email(), 'tas.mp@parliament.uk')
 
-    def test_email3(self):
+    def test_email_3(self):
         """Test getting one email when multiple set, in one format."""
         person = ModelBase()
 
@@ -217,9 +217,9 @@ class TestTwitter(unittest.TestCase):
         address2.email = 'raj@loomba.com / pritti@theloombafoundation.org'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getEmail(), 'raj@loomba.com')
+        self.assertEqual(person.get_email(), 'raj@loomba.com')
 
-    def test_email4(self):
+    def test_email_4(self):
         """Test getting one email when multiple set, in one format."""
         person = ModelBase()
 
@@ -232,9 +232,9 @@ class TestTwitter(unittest.TestCase):
         address2.email = 'charles.allen@parliament.uk PA: gill.sharp@thisisglobal.com'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getEmail(), 'charles.allen@parliament.uk')
+        self.assertEqual(person.get_email(), 'charles.allen@parliament.uk')
 
-    def test_email5(self):
+    def test_email_5(self):
         """Test getting one email when multiple set, in one format."""
         person = ModelBase()
 
@@ -247,9 +247,9 @@ class TestTwitter(unittest.TestCase):
         address2.email = 'damian.gannon@parliament.uk carole.wise@parliament.uk'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getEmail(), 'damian.gannon@parliament.uk')
+        self.assertEqual(person.get_email(), 'damian.gannon@parliament.uk')
 
-    def test_emailPeer1(self):
+    def test_email_peer_1(self):
         """Test getting an email for a Peer and ignoring contactholmember@parliament.uk."""
         person = ModelPeer()
 
@@ -261,9 +261,9 @@ class TestTwitter(unittest.TestCase):
         address2.email = 'victor@leadershipinmind.co.uk'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getEmail(), 'victor@leadershipinmind.co.uk')
+        self.assertEqual(person.get_email(), 'victor@leadershipinmind.co.uk')
 
-    def test_emailPeer2(self):
+    def test_email_peer_2(self):
         """Test getting an email for a Peer and ignoring contactholmember@parliament.uk when extra padding in input."""
         person = ModelPeer()
 
@@ -276,9 +276,9 @@ class TestTwitter(unittest.TestCase):
         address2.email = 'victor@leadershipinmind.co.uk'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getEmail(), 'victor@leadershipinmind.co.uk')
+        self.assertEqual(person.get_email(), 'victor@leadershipinmind.co.uk')
 
-    def test_getParliamentaryPhoneAndFax1(self):
+    def test_get_parliamentary_phone_and_fax_1(self):
         """Get Phone or Fax from Phone and Fax fields."""
         person = ModelBase()
 
@@ -294,10 +294,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = '020 7219 5979'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), '0207 219 2807')
-        self.assertEqual(person.getParliamentaryFax(), '020 7219 5979')
+        self.assertEqual(person.get_parliamentary_phone(), '0207 219 2807')
+        self.assertEqual(person.get_parliamentary_fax(), '020 7219 5979')
 
-    def test_getParliamentaryPhoneAndFax2(self):
+    def test_get_parliamentary_phone_and_fax_2(self):
         """Get Phone or Fax when both in Phone field, in one format."""
         person = ModelBase()
 
@@ -312,10 +312,10 @@ class TestTwitter(unittest.TestCase):
         address2.phone = '020 7219 1041 Fax: 0207 219 2405'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), '020 7219 1041')
-        self.assertEqual(person.getParliamentaryFax(), '0207 219 2405')
+        self.assertEqual(person.get_parliamentary_phone(), '020 7219 1041')
+        self.assertEqual(person.get_parliamentary_fax(), '0207 219 2405')
 
-    def test_getParliamentaryPhoneAndFax3(self):
+    def test_get_parliamentary_phone_and_fax_3(self):
         """Get Phone or Fax when several phone numbers in input, in one format."""
         person = ModelBase()
 
@@ -331,10 +331,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = '020 7219 4614'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), '020 7219 3547')
-        self.assertEqual(person.getParliamentaryFax(), '020 7219 4614')
+        self.assertEqual(person.get_parliamentary_phone(), '020 7219 3547')
+        self.assertEqual(person.get_parliamentary_fax(), '020 7219 4614')
 
-    def test_getParliamentaryPhoneAndFax4(self):
+    def test_get_parliamentary_phone_and_fax_4(self):
         """Get Phone or Fax when several phone numbers in input, in one format."""
         person = ModelBase()
 
@@ -350,10 +350,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = '020 7219 5952'
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), '020 7219 4432')
-        self.assertEqual(person.getParliamentaryFax(), '020 7219 5952')
+        self.assertEqual(person.get_parliamentary_phone(), '020 7219 4432')
+        self.assertEqual(person.get_parliamentary_fax(), '020 7219 5952')
 
-    def test_getParliamentaryPhoneAndFax5(self):
+    def test_get_parliamentary_phone_and_fax_5(self):
         """Get Phone or Fax when Fax in Phone field and several phone numbers in input, in one format."""
         person = ModelBase()
 
@@ -369,10 +369,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = ''
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), '020 7219 5135')
-        self.assertEqual(person.getParliamentaryFax(), '020 7219 4780')
+        self.assertEqual(person.get_parliamentary_phone(), '020 7219 5135')
+        self.assertEqual(person.get_parliamentary_fax(), '020 7219 4780')
 
-    def test_getParliamentaryPhoneAndFax6(self):
+    def test_get_parliamentary_phone_and_fax_6(self):
         """Test not getting Phone when Phone not in London and multiple phones."""
         person = ModelBase()
 
@@ -388,10 +388,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = ''
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), None)
-        self.assertEqual(person.getParliamentaryFax(), None)
+        self.assertEqual(person.get_parliamentary_phone(), None)
+        self.assertEqual(person.get_parliamentary_fax(), None)
 
-    def test_getParliamentaryPhoneAndFax7(self):
+    def test_get_parliamentary_phone_and_fax_7(self):
         """Test getting phone with extra data in input."""
         person = ModelBase()
 
@@ -407,10 +407,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = ''
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), '020 7219 4936')
-        self.assertEqual(person.getParliamentaryFax(), None)
+        self.assertEqual(person.get_parliamentary_phone(), '020 7219 4936')
+        self.assertEqual(person.get_parliamentary_fax(), None)
 
-    def test_getParliamentaryPhoneAndFax8(self):
+    def test_get_parliamentary_phone_and_fax_8(self):
         """Test not getting Phone when Phone not in London."""
         person = ModelBase()
 
@@ -426,10 +426,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = ''
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), None)
-        self.assertEqual(person.getParliamentaryFax(), None)
+        self.assertEqual(person.get_parliamentary_phone(), None)
+        self.assertEqual(person.get_parliamentary_fax(), None)
 
-    def test_getParliamentaryPhoneAndFax9(self):
+    def test_get_parliamentary_phone_and_fax_9(self):
         """Test getting London Phone when other phone specified first."""
         person = ModelBase()
 
@@ -445,10 +445,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = ''
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), '020 7219 5353')
-        self.assertEqual(person.getParliamentaryFax(), None)
+        self.assertEqual(person.get_parliamentary_phone(), '020 7219 5353')
+        self.assertEqual(person.get_parliamentary_fax(), None)
 
-    def test_getParliamentaryPhoneAndFax10(self):
+    def test_get_parliamentary_phone_and_fax_10(self):
         """Get Phone or Fax when both in Phone field, in one format."""
         person = ModelBase()
 
@@ -464,10 +464,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = ''
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), '020 7219 5480')
-        self.assertEqual(person.getParliamentaryFax(), '020 7219 5979')
+        self.assertEqual(person.get_parliamentary_phone(), '020 7219 5480')
+        self.assertEqual(person.get_parliamentary_fax(), '020 7219 5979')
 
-    def test_getParliamentaryPhoneAndFax11(self):
+    def test_get_parliamentary_phone_and_fax_11(self):
         """Test getting phone with extra data in input."""
         person = ModelBase()
 
@@ -483,10 +483,10 @@ class TestTwitter(unittest.TestCase):
         address2.fax = ''
         person.addresses.append(address2)
 
-        self.assertEqual(person.getParliamentaryPhone(), '020 7219 5353')
-        self.assertEqual(person.getParliamentaryFax(), None)
+        self.assertEqual(person.get_parliamentary_phone(), '020 7219 5353')
+        self.assertEqual(person.get_parliamentary_fax(), None)
 
-    def test_getConstituencyPostalAddress1(self):
+    def test_get_constituency_postal_address_1(self):
         """Test getting Constituency address when address set."""
         person = ModelMP()
 
@@ -501,9 +501,9 @@ class TestTwitter(unittest.TestCase):
         address2.address2 = 'Horsforth'
         person.addresses.append(address2)
 
-        self.assertEquals(person.getConstituencyPostalAddress().address1, '94A Town Street')
+        self.assertEquals(person.get_constituency_postal_address().address1, '94A Town Street')
 
-    def test_getConstituencyPostalAddress2(self):
+    def test_get_constituency_postal_address_2(self):
         """Test not getting Constituency address when it is not publicised."""
         person = ModelMP()
 
@@ -517,7 +517,7 @@ class TestTwitter(unittest.TestCase):
         address2.address1 = 'No constituency office publicised'
         person.addresses.append(address2)
 
-        self.assertEquals(person.getConstituencyPostalAddress(), None)
+        self.assertEquals(person.get_constituency_postal_address(), None)
 
 if __name__ == '__main__':
     unittest.main()

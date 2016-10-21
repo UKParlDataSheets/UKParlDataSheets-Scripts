@@ -35,28 +35,28 @@ class ModelBase:
         self.currentStatusStartDate = None
         self.addresses = []
 
-    def getTwitter(self):
+    def get_twitter(self):
         """Gets Twitter Username."""
         for address in self.addresses:
-            twitter = address.getTwitter()
+            twitter = address.get_twitter()
             if twitter is not None:
                 return twitter
 
-    def getFacebook(self):
+    def get_facebook(self):
         """Gets Facebook URL."""
         for address in self.addresses:
-            fb = address.getFacebook()
+            fb = address.get_facebook()
             if fb is not None:
                 return fb
 
-    def getEmail(self):
+    def get_email(self):
         """Gets Email Address"""
         for address in self.addresses:
-            email = address.getEmail()
+            email = address.get_email()
             if email is not None:
                 return email
 
-    def getParliamentaryPhone(self):
+    def get_parliamentary_phone(self):
         """Gets phone number on the Parliamentary record."""
         for address in self.addresses:
             if address.type == 'Parliamentary':
@@ -78,7 +78,7 @@ class ModelBase:
                     if phone.strip().startswith('020'):
                         return phone.strip()
 
-    def getParliamentaryFax(self):
+    def get_parliamentary_fax(self):
         """Gets fax number on the Parliamentary record."""
         for address in self.addresses:
             if address.type == 'Parliamentary':
@@ -112,7 +112,7 @@ class ModelAddressBase:
         self.fax = None
         self.email = None
 
-    def getTwitter(self):
+    def get_twitter(self):
         """Gets Twitter Username."""
         if self.address1 is not None and self.address1.startswith('https://twitter.com/'):
             return self.address1[20:].split('?').pop(0)
@@ -123,7 +123,7 @@ class ModelAddressBase:
         if self.note is not None and self.note.startswith('Twitter - @'):
             return self.note[11:]
 
-    def getFacebook(self):
+    def get_facebook(self):
         """Gets Facebook URL."""
         if self.address1 is not None and self.address1.startswith('https://www.facebook.com/'):
             return self.address1
@@ -140,7 +140,7 @@ class ModelAddressBase:
             url = self.note.split('www.facebook.com').pop(1)
             return 'https://www.facebook.com' + url
 
-    def getEmail(self):
+    def get_email(self):
         """Gets Email Address"""
         if self.email is not None and self.email.find('@') != -1:
             return self.email.strip().split(' ').pop(0)
@@ -157,7 +157,7 @@ class ModelPeerAddress(ModelAddressBase):
     def __init__(self):
         ModelAddressBase.__init__(self)
 
-    def getEmail(self):
+    def get_email(self):
         """Gets Email Address"""
         if self.email is not None and self.email.find(
                 '@') != -1 and self.email.strip() != 'contactholmember@parliament.uk':
@@ -169,10 +169,10 @@ class ModelMP(ModelBase):
     def __init__(self):
         ModelBase.__init__(self)
 
-    def getConstituencyPostalAddress(self):
+    def get_constituency_postal_address(self):
         """Gets postal Address record for the Constituency."""
         for address in self.addresses:
-            if address.isConstituencyPostalAddress():
+            if address.is_constituency_postal_address():
                 return address
 
 
@@ -181,7 +181,7 @@ class ModelMPAddress(ModelAddressBase):
     def __init__(self):
         ModelAddressBase.__init__(self)
 
-    def isConstituencyPostalAddress(self):
+    def is_constituency_postal_address(self):
         """Is this a postal address record for the Constituency? Checks type and if there is an adddress there."""
         return self.type == 'Constituency' and ((self.address2 != '' and self.address2 is not None) or (self.postcode != '' and self.postcode is not None))
 
@@ -189,40 +189,40 @@ class ModelMPAddress(ModelAddressBase):
 def go(config, upload=False):
     """Call this to do work - this calls other functions needed."""
     peersXMLFileName = config['DIRECTORY'] + '/peers.xml'
-    downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Lords/Addresses/',
+    download_data('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Lords/Addresses/',
                  peersXMLFileName)
-    peers = processData(peersXMLFileName, lambda: ModelPeer(), lambda: ModelPeerAddress())
+    peers = process_data(peersXMLFileName, lambda: ModelPeer(), lambda: ModelPeerAddress())
 
     peersCSVV1FileName = config['DIRECTORY'] + '/peers-v1.csv'
-    writeDataV1(peers, peersCSVV1FileName)
+    write_data_v1(peers, peersCSVV1FileName)
     if upload:
         uploadToS3(config, peersCSVV1FileName, 'lordsV1.csv')
 
     peersSimpleCSVV1FileName = config['DIRECTORY'] + '/peers-simple-v1.csv'
-    writePeersSimpleV1(peers, peersSimpleCSVV1FileName)
+    write_peers_simple_v1(peers, peersSimpleCSVV1FileName)
     if upload:
-        uploadToS3(config, peersSimpleCSVV1FileName, 'lordsSimpleV1.csv')
+        upload_to_s3(config, peersSimpleCSVV1FileName, 'lordsSimpleV1.csv')
 
     # we don't needs this again, so clear it to save some memory.
     peers = None
 
     mpsXMLFileName = config['DIRECTORY'] + '/mps.xml'
-    downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',
+    download_data('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',
                  mpsXMLFileName)
-    mps = processData(mpsXMLFileName, lambda: ModelMP(), lambda: ModelMPAddress())
+    mps = process_data(mpsXMLFileName, lambda: ModelMP(), lambda: ModelMPAddress())
 
     mpsCSVV1FileName = config['DIRECTORY'] + '/mps-v1.csv'
-    writeDataV1(mps, mpsCSVV1FileName)
+    write_data_v1(mps, mpsCSVV1FileName)
     if upload:
         uploadToS3(config, mpsCSVV1FileName, 'commonsV1.csv')
 
     mpsSimpleCSVV1FileName = config['DIRECTORY'] + '/mps-simple-v1.csv'
-    writeMPsSimpleV1(mps, mpsSimpleCSVV1FileName)
+    write_mps_simple_v1(mps, mpsSimpleCSVV1FileName)
     if upload:
-        uploadToS3(config, mpsSimpleCSVV1FileName, 'commonsSimpleV1.csv')
+        upload_to_s3(config, mpsSimpleCSVV1FileName, 'commonsSimpleV1.csv')
 
 
-def downloadData(url, filename):
+def download_data(url, filename):
     """Downloads data from Web and saves to local file. Raises Exception if there was a problem."""
     response = urllib2.urlopen(url)
     if response.info().gettype() != 'application/xml':
@@ -233,7 +233,7 @@ def downloadData(url, filename):
     target.close()
 
 
-def processData(peersXMLFileName, newPersonFunction, newAddressFunction):
+def process_data(peersXMLFileName, newPersonFunction, newAddressFunction):
     """Processes the local XML of Peers or MPs data and returns data objects in memory."""
     tree = ET.parse(peersXMLFileName)
     root = tree.getroot()
@@ -285,7 +285,7 @@ def processData(peersXMLFileName, newPersonFunction, newAddressFunction):
     return data
 
 
-def writeDataV1(people, filename):
+def write_data_v1(people, filename):
     """Writes in-memory data objects about Peers or MPs to an external file."""
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
@@ -363,7 +363,7 @@ def writeDataV1(people, filename):
     csvfile.close()
 
 
-def writePeersSimpleV1(peers, filename):
+def write_peers_simple_v1(peers, filename):
     """Writes in-memory data objects about Peers to an external file."""
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
@@ -381,17 +381,17 @@ def writePeersSimpleV1(peers, filename):
             person.layingMinisterName,
             person.memberFrom,
             person.party,
-            person.getEmail(),
-            person.getTwitter(),
-            person.getFacebook(),
-            person.getParliamentaryPhone(),
-            person.getParliamentaryFax(),
+            person.get_email(),
+            person.get_twitter(),
+            person.get_facebook(),
+            person.get_parliamentary_phone(),
+            person.get_parliamentary_fax(),
         ]
         writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
     csvfile.close()
 
 
-def writeMPsSimpleV1(mps, filename):
+def write_mps_simple_v1(mps, filename):
     """Writes in-memory data objects about MPs to an external file."""
     csvfile = open(filename, 'wb')
     writer = csv.writer(csvfile)
@@ -410,13 +410,13 @@ def writeMPsSimpleV1(mps, filename):
             person.layingMinisterName,
             person.memberFrom,
             person.party,
-            person.getEmail(),
-            person.getTwitter(),
-            person.getFacebook(),
-            person.getParliamentaryPhone(),
-            person.getParliamentaryFax(),
+            person.get_email(),
+            person.get_twitter(),
+            person.get_facebook(),
+            person.get_parliamentary_phone(),
+            person.get_parliamentary_fax(),
         ]
-        constituencyPostalAddress = person.getConstituencyPostalAddress()
+        constituencyPostalAddress = person.get_constituency_postal_address()
         if constituencyPostalAddress is not None:
             row.append(constituencyPostalAddress.address1)
             row.append(constituencyPostalAddress.address2)
@@ -428,7 +428,7 @@ def writeMPsSimpleV1(mps, filename):
     csvfile.close()
 
 
-def uploadToS3(config, file, key):
+def upload_to_s3(config, file, key):
     """Uploads local file to a S3 Bucket."""
     client = boto3.client(
         's3',
