@@ -233,13 +233,13 @@ def download_data(url, filename):
     target.close()
 
 
-def process_data(peersXMLFileName, newPersonFunction, newAddressFunction):
+def process_data(data_xml_file_name, new_person_function, new_address_function):
     """Processes the local XML of Peers or MPs data and returns data objects in memory."""
-    tree = ET.parse(peersXMLFileName)
+    tree = ET.parse(data_xml_file_name)
     root = tree.getroot()
     data = []
     for child in root:
-        person = newPersonFunction()
+        person = new_person_function()
         person.memberId = child.attrib['Member_Id']
         person.dobsId = child.attrib['Dods_Id']
         person.pimsId = child.attrib['Pims_Id']
@@ -263,7 +263,7 @@ def process_data(peersXMLFileName, newPersonFunction, newAddressFunction):
             person.currentStatusReason = current_status.find('Reason').text
             person.currentStatusStartDate = current_status.find('StartDate').text
         for address_root in child.find('Addresses').findall('Address'):
-            address = newAddressFunction()
+            address = new_address_function()
             address.typeId = address_root.attrib['Type_Id']
             address.type = address_root.find('Type').text if address_root.find('Type') is not None else None
             address.isPreferred = address_root.find('IsPreferred').text if address_root.find(
