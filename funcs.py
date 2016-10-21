@@ -191,7 +191,7 @@ def go(config, upload=False):
     peersXMLFileName = config['DIRECTORY'] + '/peers.xml'
     downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Lords/Addresses/',
                  peersXMLFileName)
-    peers = processPeers(peersXMLFileName)
+    peers = processData(peersXMLFileName, lambda: ModelPeer(), lambda: ModelPeerAddress())
 
     peersCSVV1FileName = config['DIRECTORY'] + '/peers-v1.csv'
     writeDataV1(peers, peersCSVV1FileName)
@@ -209,7 +209,7 @@ def go(config, upload=False):
     mpsXMLFileName = config['DIRECTORY'] + '/mps.xml'
     downloadData('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',
                  mpsXMLFileName)
-    mps = processMPs(mpsXMLFileName)
+    mps = processData(mpsXMLFileName, lambda: ModelMP(), lambda: ModelMPAddress())
 
     mpsCSVV1FileName = config['DIRECTORY'] + '/mps-v1.csv'
     writeDataV1(mps, mpsCSVV1FileName)
@@ -233,13 +233,13 @@ def downloadData(url, filename):
     target.close()
 
 
-def processPeers(peersXMLFileName):
-    """Processes the local XML of Peers data and returns data objects in memory."""
+def processData(peersXMLFileName, newPersonFunction, newAddressFunction):
+    """Processes the local XML of Peers or MPs data and returns data objects in memory."""
     tree = ET.parse(peersXMLFileName)
     root = tree.getroot()
-    peers = []
+    data = []
     for child in root:
-        person = ModelPeer()
+        person = newPersonFunction()
         person.memberId = child.attrib['Member_Id']
         person.dobsId = child.attrib['Dods_Id']
         person.pimsId = child.attrib['Pims_Id']
@@ -263,7 +263,7 @@ def processPeers(peersXMLFileName):
             person.currentStatusReason = currentStatus.find('Reason').text
             person.currentStatusStartDate = currentStatus.find('StartDate').text
         for addressRoot in child.find('Addresses').findall('Address'):
-            address = ModelPeerAddress()
+            address = newAddressFunction()
             address.typeId = addressRoot.attrib['Type_Id']
             address.type = addressRoot.find('Type').text if addressRoot.find('Type') is not None else None
             address.isPreferred = addressRoot.find('IsPreferred').text if addressRoot.find(
@@ -281,8 +281,8 @@ def processPeers(peersXMLFileName):
             address.fax = addressRoot.find('Fax').text if addressRoot.find('Fax') is not None else None
             address.email = addressRoot.find('Email').text if addressRoot.find('Email') is not None else None
             person.addresses.append(address)
-        peers.append(person)
-    return peers
+        data.append(person)
+    return data
 
 
 def writeDataV1(people, filename):
@@ -389,59 +389,6 @@ def writePeersSimpleV1(peers, filename):
         ]
         writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
     csvfile.close()
-
-
-def processMPs(filename):
-    """Processes the local XML of MPs data and returns data objects in memory."""
-    tree = ET.parse(filename)
-    root = tree.getroot()
-    mps = []
-    for child in root:
-        person = ModelMP()
-        person.memberId = child.attrib['Member_Id']
-        person.dobsId = child.attrib['Dods_Id']
-        person.pimsId = child.attrib['Pims_Id']
-        person.displayAs = child.find('DisplayAs').text
-        person.listAs = child.find('ListAs').text
-        person.fullTitle = child.find('FullTitle').text
-        person.layingMinisterName = child.find('LayingMinisterName').text
-        person.dateOfBirth = child.find('DateOfBirth').text
-        person.dateOfDeath = child.find('DateOfDeath').text
-        person.gender = child.find('Gender').text
-        person.party = child.find('Party').text
-        person.house = child.find('House').text
-        person.memberFrom = child.find('MemberFrom').text
-        person.houseStartDate = child.find('HouseStartDate').text
-        person.houseEndDate = child.find('HouseEndDate').text
-        currentStatus = child.find('CurrentStatus')
-        if (currentStatus is not None):
-            person.currentStatusID = currentStatus.attrib['Id']
-            person.currentStatusIsActive = currentStatus.attrib['IsActive']
-            person.currentStatusName = currentStatus.find('Name').text
-            person.currentStatusReason = currentStatus.find('Reason').text
-            person.currentStatusStartDate = currentStatus.find('StartDate').text
-        for addressRoot in child.find('Addresses').findall('Address'):
-            address = ModelMPAddress()
-            address.typeId = addressRoot.attrib['Type_Id']
-            address.type = addressRoot.find('Type').text if addressRoot.find('Type') is not None else None
-            address.isPreferred = addressRoot.find('IsPreferred').text if addressRoot.find(
-                'IsPreferred') is not None else None
-            address.isPhysical = addressRoot.find('IsPhysical').text if addressRoot.find(
-                'IsPhysical') is not None else None
-            address.note = addressRoot.find('Note').text if addressRoot.find('Note') is not None else None
-            address.address1 = addressRoot.find('Address1').text if addressRoot.find('Address1') is not None else None
-            address.address2 = addressRoot.find('Address2').text if addressRoot.find('Address2') is not None else None
-            address.address3 = addressRoot.find('Address3').text if addressRoot.find('Address3') is not None else None
-            address.address4 = addressRoot.find('Address4').text if addressRoot.find('Address4') is not None else None
-            address.address5 = addressRoot.find('Address5').text if addressRoot.find('Address5') is not None else None
-            address.postcode = addressRoot.find('Postcode').text if addressRoot.find('Postcode') is not None else None
-            address.phone = addressRoot.find('Phone').text if addressRoot.find('Phone') is not None else None
-            address.fax = addressRoot.find('Fax').text if addressRoot.find('Fax') is not None else None
-            address.email = addressRoot.find('Email').text if addressRoot.find('Email') is not None else None
-            person.addresses.append(address)
-        mps.append(person)
-    return mps
-
 
 
 def writeMPsSimpleV1(mps, filename):
