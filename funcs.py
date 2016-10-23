@@ -428,12 +428,12 @@ def write_mps_simple_v1(mps, filename):
     csv_file.close()
 
 
-def upload_to_s3(config, file, key):
+def upload_to_s3(config, local_file_name, key):
     """Uploads local file to a S3 Bucket."""
     client = boto3.client(
         's3',
         aws_access_key_id=config['AWS_ACCESS_KEY'],
         aws_secret_access_key=config['AWS_SECRET_KEY']
     )
-    data = open(file, 'rb')
+    data = open(local_file_name, 'rb')
     client.put_object(Key=key, Body=data, Bucket=config['AWS_BUCKET_NAME'])
