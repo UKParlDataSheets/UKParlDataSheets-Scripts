@@ -196,7 +196,7 @@ def go(config, upload=False):
     peers_csv_v1_file_name = config['DIRECTORY'] + '/peers-v1.csv'
     write_data_v1(peers, peers_csv_v1_file_name)
     if upload:
-        uploadToS3(config, peers_csv_v1_file_name, 'lordsV1.csv')
+        upload_to_s3(config, peers_csv_v1_file_name, 'lordsV1.csv')
 
     peers_simple_csv_v1_file_name = config['DIRECTORY'] + '/peers-simple-v1.csv'
     write_peers_simple_v1(peers, peers_simple_csv_v1_file_name)
@@ -214,7 +214,7 @@ def go(config, upload=False):
     mps_csv_v1_file_name = config['DIRECTORY'] + '/mps-v1.csv'
     write_data_v1(mps, mps_csv_v1_file_name)
     if upload:
-        uploadToS3(config, mps_csv_v1_file_name, 'commonsV1.csv')
+        upload_to_s3(config, mps_csv_v1_file_name, 'commonsV1.csv')
 
     mps_simple_csv_v1_file_name = config['DIRECTORY'] + '/mps-simple-v1.csv'
     write_mps_simple_v1(mps, mps_simple_csv_v1_file_name)
