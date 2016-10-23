@@ -26,12 +26,12 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
-        address2.address1 = 'https://twitter.com/LizBarkerLords'
+        address2.address_1 = 'https://twitter.com/LizBarkerLords'
         person.addresses.append(address2)
 
         self.assertEqual(person.get_twitter(), 'LizBarkerLords')
@@ -41,8 +41,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -56,8 +56,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -71,12 +71,12 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
-        address2.address1 = 'https://twitter.com/LordRoyKennedy?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor'
+        address2.address_1 = 'https://twitter.com/LordRoyKennedy?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor'
         person.addresses.append(address2)
 
         self.assertEqual(person.get_twitter(), 'LordRoyKennedy')
@@ -86,8 +86,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -101,12 +101,12 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
-        address2.address1 = 'https://www.facebook.com/marycreaghwakefield'
+        address2.address_1 = 'https://www.facebook.com/marycreaghwakefield'
         person.addresses.append(address2)
 
         self.assertEqual(person.get_facebook(), 'https://www.facebook.com/marycreaghwakefield')
@@ -116,12 +116,12 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
-        address2.address1 = 'http://www.facebook.com/JeremyCorbynMP/'
+        address2.address_1 = 'http://www.facebook.com/JeremyCorbynMP/'
         person.addresses.append(address2)
 
         self.assertEqual(person.get_facebook(), 'http://www.facebook.com/JeremyCorbynMP/')
@@ -131,12 +131,12 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
-        address2.address1 = 'https://en-gb.facebook.com/LordAltonofLiverpool/'
+        address2.address_1 = 'https://en-gb.facebook.com/LordAltonofLiverpool/'
         person.addresses.append(address2)
 
         self.assertEqual(person.get_facebook(), 'https://en-gb.facebook.com/LordAltonofLiverpool/')
@@ -146,8 +146,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -162,8 +162,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -178,8 +178,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -194,8 +194,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -209,8 +209,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -224,8 +224,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -239,8 +239,8 @@ class TestTwitter(unittest.TestCase):
         person = ModelBase()
 
         address1 = ModelAddressBase()
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -284,8 +284,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -303,8 +303,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -321,8 +321,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -340,8 +340,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -359,8 +359,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -378,8 +378,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -397,8 +397,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -416,8 +416,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -435,8 +435,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -454,8 +454,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -473,8 +473,8 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelAddressBase()
         address1.type = 'External/Private Office'
-        address1.address1 = 'My House'
-        address1.address2 = 'My Street'
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
         person.addresses.append(address1)
 
         address2 = ModelAddressBase()
@@ -492,16 +492,16 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelMPAddress()
         address1.type = 'Parliamentary'
-        address1.address1 = 'House of Commons'
+        address1.address_1 = 'House of Commons'
         person.addresses.append(address1)
 
         address2 = ModelMPAddress()
         address2.type = 'Constituency'
-        address2.address1 = '94A Town Street'
-        address2.address2 = 'Horsforth'
+        address2.address_1 = '94A Town Street'
+        address2.address_2 = 'Horsforth'
         person.addresses.append(address2)
 
-        self.assertEquals(person.get_constituency_postal_address().address1, '94A Town Street')
+        self.assertEquals(person.get_constituency_postal_address().address_1, '94A Town Street')
 
     def test_get_constituency_postal_address_2(self):
         """Test not getting Constituency address when it is not publicised."""
@@ -509,12 +509,12 @@ class TestTwitter(unittest.TestCase):
 
         address1 = ModelMPAddress()
         address1.type = 'Parliamentary'
-        address1.address1 = 'House of Commons'
+        address1.address_1 = 'House of Commons'
         person.addresses.append(address1)
 
         address2 = ModelMPAddress()
         address2.type = 'Constituency'
-        address2.address1 = 'No constituency office publicised'
+        address2.address_1 = 'No constituency office publicised'
         person.addresses.append(address2)
 
         self.assertEquals(person.get_constituency_postal_address(), None)

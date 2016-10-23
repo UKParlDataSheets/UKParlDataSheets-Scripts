@@ -13,26 +13,26 @@ import boto3
 class ModelBase:
     """Base Model for an MP or a Peer. Should not be used directly - Abstract class."""
     def __init__(self):
-        self.memberId = None
-        self.dobsId = None
-        self.pimsId = None
-        self.displayAs = None
-        self.listAs = None
-        self.fullTitle = None
-        self.layingMinisterName = None
-        self.dateOfBirth = None
-        self.dateOfDeath = None
+        self.member_id = None
+        self.dobs_id = None
+        self.pims_id = None
+        self.display_as = None
+        self.list_as = None
+        self.full_title = None
+        self.laying_minister_name = None
+        self.date_of_birth = None
+        self.date_of_death = None
         self.gender = None
         self.party = None
         self.house = None
-        self.memberFrom = None
-        self.houseStartDate = None
-        self.houseEndDate = None
-        self.currentStatusID = None
-        self.currentStatusIsActive = None
-        self.currentStatusName = None
-        self.currentStatusReason = None
-        self.currentStatusStartDate = None
+        self.member_from = None
+        self.house_start_date = None
+        self.house_end_date = None
+        self.current_status_id = None
+        self.current_status_is_active = None
+        self.current_status_name = None
+        self.current_status_reason = None
+        self.current_status_start_date = None
         self.addresses = []
 
     def get_twitter(self):
@@ -97,16 +97,16 @@ class ModelBase:
 class ModelAddressBase:
     """Base Model for an Address for an MP or a Peer.  Should not be used directly - Abstract class."""
     def __init__(self):
-        self.typeId = None
+        self.type_id = None
         self.type = None
-        self.isPreferred = None
-        self.isPhysical = None
+        self.is_preferred = None
+        self.is_physical = None
         self.note = None
-        self.address1 = None
-        self.address2 = None
-        self.address3 = None
-        self.address4 = None
-        self.address5 = None
+        self.address_1 = None
+        self.address_2 = None
+        self.address_3 = None
+        self.address_4 = None
+        self.address_5 = None
         self.postcode = None
         self.phone = None
         self.fax = None
@@ -114,8 +114,8 @@ class ModelAddressBase:
 
     def get_twitter(self):
         """Gets Twitter Username."""
-        if self.address1 is not None and self.address1.startswith('https://twitter.com/'):
-            return self.address1[20:].split('?').pop(0)
+        if self.address_1 is not None and self.address_1.startswith('https://twitter.com/'):
+            return self.address_1[20:].split('?').pop(0)
         if self.note is not None and self.note.startswith('Twitter: @'):
             return self.note[10:].split(',').pop(0).split(';').pop(0).strip()
         if self.note is not None and self.note.startswith('Twitter: '):
@@ -125,12 +125,12 @@ class ModelAddressBase:
 
     def get_facebook(self):
         """Gets Facebook URL."""
-        if self.address1 is not None and self.address1.startswith('https://www.facebook.com/'):
-            return self.address1
-        if self.address1 is not None and self.address1.startswith('http://www.facebook.com/'):
-            return self.address1
-        if self.address1 is not None and self.address1.startswith('https://en-gb.facebook.com/'):
-            return self.address1
+        if self.address_1 is not None and self.address_1.startswith('https://www.facebook.com/'):
+            return self.address_1
+        if self.address_1 is not None and self.address_1.startswith('http://www.facebook.com/'):
+            return self.address_1
+        if self.address_1 is not None and self.address_1.startswith('https://en-gb.facebook.com/'):
+            return self.address_1
         if self.note is not None and self.note.find('Facebook: ') != -1:
             url = self.note.split(', Facebook: ').pop(1)
             if not url.startswith('http'):
@@ -183,7 +183,7 @@ class ModelMPAddress(ModelAddressBase):
 
     def is_constituency_postal_address(self):
         """Is this a postal address record for the Constituency? Checks type and if there is an adddress there."""
-        return self.type == 'Constituency' and ((self.address2 != '' and self.address2 is not None) or (self.postcode != '' and self.postcode is not None))
+        return self.type == 'Constituency' and ((self.address_2 != '' and self.address_2 is not None) or (self.postcode != '' and self.postcode is not None))
 
 
 def go(config, upload=False):
@@ -240,42 +240,42 @@ def process_data(data_xml_file_name, new_person_function, new_address_function):
     data = []
     for child in root:
         person = new_person_function()
-        person.memberId = child.attrib['Member_Id']
-        person.dobsId = child.attrib['Dods_Id']
-        person.pimsId = child.attrib['Pims_Id']
-        person.displayAs = child.find('DisplayAs').text
-        person.listAs = child.find('ListAs').text
-        person.fullTitle = child.find('FullTitle').text
-        person.layingMinisterName = child.find('LayingMinisterName').text
-        person.dateOfBirth = child.find('DateOfBirth').text
-        person.dateOfDeath = child.find('DateOfDeath').text
+        person.member_id = child.attrib['Member_Id']
+        person.dobs_id = child.attrib['Dods_Id']
+        person.pims_id = child.attrib['Pims_Id']
+        person.display_as = child.find('DisplayAs').text
+        person.list_as = child.find('ListAs').text
+        person.full_title = child.find('FullTitle').text
+        person.laying_minister_name = child.find('LayingMinisterName').text
+        person.date_of_birth = child.find('DateOfBirth').text
+        person.date_of_death = child.find('DateOfDeath').text
         person.gender = child.find('Gender').text
         person.party = child.find('Party').text
         person.house = child.find('House').text
-        person.memberFrom = child.find('MemberFrom').text
-        person.houseStartDate = child.find('HouseStartDate').text
-        person.houseEndDate = child.find('HouseEndDate').text
+        person.member_from = child.find('MemberFrom').text
+        person.house_start_date = child.find('HouseStartDate').text
+        person.house_end_date = child.find('HouseEndDate').text
         current_status = child.find('CurrentStatus')
         if current_status is not None:
-            person.currentStatusID = current_status.attrib['Id']
-            person.currentStatusIsActive = current_status.attrib['IsActive']
-            person.currentStatusName = current_status.find('Name').text
-            person.currentStatusReason = current_status.find('Reason').text
-            person.currentStatusStartDate = current_status.find('StartDate').text
+            person.current_status_id = current_status.attrib['Id']
+            person.current_status_is_active = current_status.attrib['IsActive']
+            person.current_status_name = current_status.find('Name').text
+            person.current_status_reason = current_status.find('Reason').text
+            person.current_status_start_date = current_status.find('StartDate').text
         for address_root in child.find('Addresses').findall('Address'):
             address = new_address_function()
-            address.typeId = address_root.attrib['Type_Id']
+            address.type_id = address_root.attrib['Type_Id']
             address.type = address_root.find('Type').text if address_root.find('Type') is not None else None
-            address.isPreferred = address_root.find('IsPreferred').text if address_root.find(
+            address.is_preferred = address_root.find('IsPreferred').text if address_root.find(
                 'IsPreferred') is not None else None
-            address.isPhysical = address_root.find('IsPhysical').text if address_root.find(
+            address.is_physical = address_root.find('IsPhysical').text if address_root.find(
                 'IsPhysical') is not None else None
             address.note = address_root.find('Note').text if address_root.find('Note') is not None else None
-            address.address1 = address_root.find('Address1').text if address_root.find('Address1') is not None else None
-            address.address2 = address_root.find('Address2').text if address_root.find('Address2') is not None else None
-            address.address3 = address_root.find('Address3').text if address_root.find('Address3') is not None else None
-            address.address4 = address_root.find('Address4').text if address_root.find('Address4') is not None else None
-            address.address5 = address_root.find('Address5').text if address_root.find('Address5') is not None else None
+            address.address_1 = address_root.find('Address1').text if address_root.find('Address1') is not None else None
+            address.address_2 = address_root.find('Address2').text if address_root.find('Address2') is not None else None
+            address.address_3 = address_root.find('Address3').text if address_root.find('Address3') is not None else None
+            address.address_4 = address_root.find('Address4').text if address_root.find('Address4') is not None else None
+            address.address_5 = address_root.find('Address5').text if address_root.find('Address5') is not None else None
             address.postcode = address_root.find('Postcode').text if address_root.find('Postcode') is not None else None
             address.phone = address_root.find('Phone').text if address_root.find('Phone') is not None else None
             address.fax = address_root.find('Fax').text if address_root.find('Fax') is not None else None
@@ -319,39 +319,39 @@ def write_data_v1(people, filename):
     writer.writerow(headings)
     for person in people:
         row = [
-            person.memberId,
-            person.dobsId,
-            person.pimsId,
-            person.displayAs,
-            person.listAs,
-            person.fullTitle,
-            person.layingMinisterName,
-            person.dateOfBirth,
-            person.dateOfDeath,
+            person.member_id,
+            person.dobs_id,
+            person.pims_id,
+            person.display_as,
+            person.list_as,
+            person.full_title,
+            person.laying_minister_name,
+            person.date_of_birth,
+            person.date_of_death,
             person.gender,
             person.party,
             person.house,
-            person.memberFrom,
-            person.houseStartDate,
-            person.houseEndDate,
-            person.currentStatusID,
-            person.currentStatusIsActive,
-            person.currentStatusName,
-            person.currentStatusReason,
-            person.currentStatusStartDate,
+            person.member_from,
+            person.house_start_date,
+            person.house_end_date,
+            person.current_status_id,
+            person.current_status_is_active,
+            person.current_status_name,
+            person.current_status_reason,
+            person.current_status_start_date,
         ]
         for i in range(0, 4):
             if len(person.addresses) > i:
-                row.append(person.addresses[i].typeId)
+                row.append(person.addresses[i].type_id)
                 row.append(person.addresses[i].type)
-                row.append(person.addresses[i].isPreferred)
-                row.append(person.addresses[i].isPhysical)
+                row.append(person.addresses[i].is_preferred)
+                row.append(person.addresses[i].is_physical)
                 row.append(person.addresses[i].note)
-                row.append(person.addresses[i].address1)
-                row.append(person.addresses[i].address2)
-                row.append(person.addresses[i].address3)
-                row.append(person.addresses[i].address4)
-                row.append(person.addresses[i].address5)
+                row.append(person.addresses[i].address_1)
+                row.append(person.addresses[i].address_2)
+                row.append(person.addresses[i].address_3)
+                row.append(person.addresses[i].address_4)
+                row.append(person.addresses[i].address_5)
                 row.append(person.addresses[i].postcode)
                 row.append(person.addresses[i].phone)
                 row.append(person.addresses[i].fax)
@@ -372,14 +372,14 @@ def write_peers_simple_v1(peers, filename):
     writer.writerow(headings)
     for person in peers:
         row = [
-            person.memberId,
-            person.dobsId,
-            person.pimsId,
-            person.displayAs,
-            person.listAs,
-            person.fullTitle,
-            person.layingMinisterName,
-            person.memberFrom,
+            person.member_id,
+            person.dobs_id,
+            person.pims_id,
+            person.display_as,
+            person.list_as,
+            person.full_title,
+            person.laying_minister_name,
+            person.member_from,
             person.party,
             person.get_email(),
             person.get_twitter(),
@@ -401,14 +401,14 @@ def write_mps_simple_v1(mps, filename):
     writer.writerow(headings)
     for person in mps:
         row = [
-            person.memberId,
-            person.dobsId,
-            person.pimsId,
-            person.displayAs,
-            person.listAs,
-            person.fullTitle,
-            person.layingMinisterName,
-            person.memberFrom,
+            person.member_id,
+            person.dobs_id,
+            person.pims_id,
+            person.display_as,
+            person.list_as,
+            person.full_title,
+            person.laying_minister_name,
+            person.member_from,
             person.party,
             person.get_email(),
             person.get_twitter(),
@@ -418,11 +418,11 @@ def write_mps_simple_v1(mps, filename):
         ]
         constituency_postal_address = person.get_constituency_postal_address()
         if constituency_postal_address is not None:
-            row.append(constituency_postal_address.address1)
-            row.append(constituency_postal_address.address2)
-            row.append(constituency_postal_address.address3)
-            row.append(constituency_postal_address.address4)
-            row.append(constituency_postal_address.address5)
+            row.append(constituency_postal_address.address_1)
+            row.append(constituency_postal_address.address_2)
+            row.append(constituency_postal_address.address_3)
+            row.append(constituency_postal_address.address_4)
+            row.append(constituency_postal_address.address_5)
             row.append(constituency_postal_address.postcode)
         writer.writerow([(unicode(s).encode("utf-8") if s is not None else '') for s in row])
     csv_file.close()
