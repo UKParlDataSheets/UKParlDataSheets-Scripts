@@ -42,6 +42,8 @@ The scripts are designed to be run in AWS Lambda.
 
 Make a zip file of all *.py files and upload.
 
+(Note as AWS Lambda already comes with boto3 pre-installed, we don't need to do anything special to install that.)
+
 Configure Runtime: Python 2.7, Handler: lambda_function.lambda_handler
 
 Set up a trigger to run the task on a regular basis.
