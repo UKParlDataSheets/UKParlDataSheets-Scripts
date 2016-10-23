@@ -12,6 +12,8 @@ Needed libraries:
 
   *  boto3
 
+(Or install as specified in "requirements.txt")
+
 Copy "config.py.dist" to "config.py" and edit.
 
 The AWS user should have the putObject permission on the bucket.
