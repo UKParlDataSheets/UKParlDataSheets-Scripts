@@ -2,6 +2,7 @@ import urllib2
 import xml.etree.ElementTree as ET
 import csv
 import boto3
+import re
 
 
 #
@@ -54,7 +55,7 @@ class ModelBase:
         for address in self.addresses:
             email = address.get_email()
             if email is not None:
-                return email
+                return re.sub(";$","",email)
 
     def get_parliamentary_phone(self):
         """Gets phone number on the Parliamentary record."""
