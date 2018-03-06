@@ -193,6 +193,9 @@ def go(config, upload=False):
                   peers_xml_file_name)
     peers = process_data(peers_xml_file_name, lambda: ModelPeer(), lambda: ModelPeerAddress())
 
+    if len(peers) ==  0:
+        raise Exception('We could not load any Peers!');
+
     peers_csv_v1_file_name = config['DIRECTORY'] + '/peers-v1.csv'
     write_data_v1(peers, peers_csv_v1_file_name)
     if upload:
@@ -210,6 +213,9 @@ def go(config, upload=False):
     download_data('http://data.parliament.uk/membersdataplatform/services/mnis/members/query/House=Commons/Addresses/',
                   mps_xml_file_name)
     mps = process_data(mps_xml_file_name, lambda: ModelMP(), lambda: ModelMPAddress())
+
+    if len(mps) == 0:
+        raise Exception('We could not load any MPs!');
 
     mps_csv_v1_file_name = config['DIRECTORY'] + '/mps-v1.csv'
     write_data_v1(mps, mps_csv_v1_file_name)
