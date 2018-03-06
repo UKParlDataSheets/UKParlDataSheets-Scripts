@@ -249,6 +249,21 @@ class TestTwitter(unittest.TestCase):
 
         self.assertEqual(person.get_email(), 'damian.gannon@parliament.uk')
 
+    def test_email_6(self):
+        """Test getting a email when semi colon at end https://github.com/UKParlDataSheets/UKParlDataSheets-Scripts/issues/5 """
+        person = ModelBase()
+
+        address1 = ModelAddressBase()
+        address1.address_1 = 'My House'
+        address1.address_2 = 'My Street'
+        person.addresses.append(address1)
+
+        address2 = ModelAddressBase()
+        address2.email = 'damian.gannon@parliament.uk;'
+        person.addresses.append(address2)
+
+        self.assertEqual(person.get_email(), 'damian.gannon@parliament.uk')
+
     def test_email_peer_1(self):
         """Test getting an email for a Peer and ignoring contactholmember@parliament.uk."""
         person = ModelPeer()
